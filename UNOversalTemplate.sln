@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UNOversalTemplate.Services", "UNOversalTemplate.Services\UNOversalTemplate.Services.shproj", "{879BB3B5-F4A4-4F81-85C8-AA2328BA1454}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UNOversalTemplate.IoC.DryIoC", "UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.shproj", "{498AE0AD-1BD1-4139-ADFF-8DC51F73643E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UNOversalTemplate.Core", "UNOversalTemplate.Core\UNOversalTemplate.Core.shproj", "{D1825E4F-D418-4D2F-9456-66BADC726D1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89FB261D-C891-4E64-8716-F59A122583CD}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{498ae0ad-1bd1-4139-adff-8dc51f73643e}*SharedItemsImports = 13
+		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{879bb3b5-f4a4-4f81-85c8-aa2328ba1454}*SharedItemsImports = 13
+		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{d1825e4f-d418-4d2f-9456-66badc726d1a}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
