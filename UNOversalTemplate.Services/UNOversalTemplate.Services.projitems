@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>879bb3b5-f4a4-4f81-85c8-aa2328ba1454</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>UNOversalTemplate.Services</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Abstractions\IDialogInitialize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Abstractions\IDialogInitializeAsync.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Abstractions\IDialogParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Abstractions\IDialogService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Default\DialogManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Default\DialogParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Default\DialogService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\Extensions\DialogExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)File\Abstractions\IFileService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)File\Abstractions\StorageStrategies.enum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)File\Default\FileService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\AvailabilityChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\ConnectionTypes.enum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\INetworkService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\Default\NetworkAvailableHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\Default\NetworkService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\Messages\NetworkAvailabilityChangedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Secrets\Abstractions\ISecretService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Secrets\Abstractions\SecretServiceBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Secrets\Default\SecretHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Secrets\Default\SecretService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\Abstractions\ISerializationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\Default\NullSerializationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Abstractions\ISettingsAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Abstractions\ISettingsHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Adapters\LocalFileSettingsAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Adapters\LocalSettingsAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Default\SettingsHelper.cs" />
+  </ItemGroup>
+</Project>

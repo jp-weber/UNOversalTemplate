@@ -1,0 +1,17 @@
+﻿<unoApp:UNOversalApplication
+    x:Class="UWP_Sample.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:unoApp="using:UNOversal.DryIoc"
+    xmlns:local="using:UWP_Sample">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Application.Resources>
+
+</unoApp:UNOversalApplication>

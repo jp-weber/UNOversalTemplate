@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d1825e4f-d418-4d2f-9456-66badc726d1a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>UNOversalTemplate.Core</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\MvvmHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IApplicationArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ioc\IContainerExtensionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\Category.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\DebugLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\EmptyLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\ILoggerFacade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\Priority.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modularity\IModuleCatalogExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modularity\ModuleCatalog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modularity\ModuleInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modularity\ModuleInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modularity\ModuleManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModelBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModelLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\IConfirmNavigation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\IConfirmNavigationAsync.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\IFrameFacade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\IFrameFacade2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\IInitialize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\IInitializeAsync.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigatedAware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigatingAware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigatingAwareAsync.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationAware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationParametersExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationParametersInternal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationPath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationService2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationServiceExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\FrameFacade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\FrameFacadeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationEventArgsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationParametersExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationPath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\PageNavigationInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\PageNavigationRegistry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StartCauses.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StartKinds.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplicationBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplicationBase.xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UNOversalIocExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\BindingUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\XamlUtilities.cs" />
+  </ItemGroup>
+</Project>

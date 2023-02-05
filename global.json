@@ -1,0 +1,10 @@
+{
+  "sdk": {
+    "allowPrerelease": false,
+    "version": "7.0.102",
+    "rollForward": "latestMajor"
+  },
+  "msbuild-sdks": {
+    "MSBuild.Sdk.Extras": "3.0.44"
+  }
+}
