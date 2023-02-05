@@ -25,4 +25,4 @@ The following steps will help if you want to contribute or work on the applicati
 	- Remember to trust 3rd party Apps by enabling this in the Android developer settings if you want to build from source
 
 ### Sample apps
-Currently two sample apps 
+Currently two sample apps (UWP and Uno app with iOS/Android/macOS/MacCatalyst).
