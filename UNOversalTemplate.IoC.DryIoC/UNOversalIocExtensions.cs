@@ -7,7 +7,7 @@ namespace UNOversal.DryIoc
     /// <summary>
     /// Extensions help get the underlying <see cref="IContainer" />
     /// </summary>
-    public static class PrismIocExtensions
+    public static class UNOversalIocExtensions
     {
         /// <summary>
         /// Gets the <see cref="IContainer" /> from the <see cref="IContainerProvider" />

@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DryIocContainerExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UNOversalIocExtensions.cs" />
   </ItemGroup>
 </Project>

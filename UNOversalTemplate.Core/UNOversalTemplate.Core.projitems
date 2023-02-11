@@ -43,7 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationService2.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Abstract\INavigationServiceExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationServiceExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\FrameFacade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\FrameFacadeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationEventArgsExtensions.cs" />
@@ -60,7 +60,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)StartKinds.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplicationBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplicationBase.xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UNOversalIocExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\BindingUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\XamlUtilities.cs" />
   </ItemGroup>

@@ -5,9 +5,6 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-//using Prism.Regions;
-//using Prism.Regions.Behaviors;
-//using Prism.Services.Dialogs;
 using System.Threading.Tasks;
 using UNOversal.Logging;
 using System.Diagnostics;
@@ -151,23 +148,23 @@ namespace UNOversal
                 _startSemaphore.Release();
             }
 
-            void SetupExtendedSplashScreen()
-            {
-                if (startArgs.StartKind == StartKinds.Launch
-                    && startArgs.Arguments is IActivatedEventArgs act
-                    && WinUIWindow.Current.Content is null
-                    && (ExtendedSplashScreenFactory != null))
-                {
-                    try
-                    {
-                        WinUIWindow.Current.Content = ExtendedSplashScreenFactory(act.SplashScreen);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception($"Error during {nameof(ExtendedSplashScreenFactory)}.", ex);
-                    }
-                }
-            }
+            //void SetupExtendedSplashScreen()
+            //{
+            //    if (startArgs.StartKind == StartKinds.Launch
+            //        && startArgs.Arguments is IActivatedEventArgs act
+            //        && WinUIWindow.Current.Content is null
+            //        && (ExtendedSplashScreenFactory != null))
+            //    {
+            //        try
+            //        {
+            //            WinUIWindow.Current.Content = ExtendedSplashScreenFactory(act.SplashScreen);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            throw new Exception($"Error during {nameof(ExtendedSplashScreenFactory)}.", ex);
+            //        }
+            //    }
+            //}
         }
 
         private void CallOnInitializedOnlyOnce()

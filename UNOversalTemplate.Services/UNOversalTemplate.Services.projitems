@@ -20,6 +20,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)File\Abstractions\IFileService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)File\Abstractions\StorageStrategies.enum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)File\Default\FileService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gesture\Default\Gesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gesture\Default\GestureBlocker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gesture\Default\GestureService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gesture\Abstractions\IGestureService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gesture\Default\KeyDownEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\AvailabilityChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\ConnectionTypes.enum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\INetworkService.cs" />
@@ -37,5 +42,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Adapters\LocalFileSettingsAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Adapters\LocalSettingsAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Default\SettingsHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Gesture\Abstractions\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Gesture\Default\" />
   </ItemGroup>
 </Project>
