@@ -169,15 +169,16 @@ namespace UNOversal.Navigation
             _logger.Log($"{nameof(FrameFacade)}.{nameof(NavigateAsync)}({queue})", Category.Info, Priority.None);
 
             // clear stack, if requested
-
+#if WINDOWS_UWP
             if (queue.ClearBackStack)
             {
                 _frame.SetNavigationState(new Frame().GetNavigationState());
             }
+#endif
 
-            // iterate through queue
+                // iterate through queue
 
-            while (queue.Count > 0)
+                while (queue.Count > 0)
             {
                 var pageNavinfo = queue.Dequeue();
 
@@ -192,6 +193,13 @@ namespace UNOversal.Navigation
                     return result;
                 }
             }
+
+#if !WINDOWS_UWP
+            if (queue.ClearBackStack)
+            {
+                _frame.BackStack.Clear();
+            }
+#endif
 
             // finally
 
