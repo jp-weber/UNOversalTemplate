@@ -4,7 +4,6 @@ using Windows.UI.Xaml;
 using Microsoft.UI.Xaml;
 #endif
 using Prism.Mvvm;
-using win = Windows.ApplicationModel;
 
 namespace UNOversal.Mvvm
 {
@@ -35,7 +34,7 @@ namespace UNOversal.Mvvm
 
         private static void OnAutowireViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!win.DesignMode.DesignModeEnabled)
+            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
                 var value = (bool?)e.NewValue;
                 if (value.HasValue && value.Value)

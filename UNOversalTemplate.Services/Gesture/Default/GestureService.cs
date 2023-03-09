@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Prism.Ioc;
 using UNOversal.Logging;
 using Windows.UI.Core;
 using Windows.System;
 #if WINDOWS_UWP
-using Project2FA.UWP;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 #else
-using Project2FA.UNO;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 #endif
@@ -61,8 +58,7 @@ namespace Project2FA.Services
         {
             window.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
             window.PointerPressed += CoreWindow_PointerPressed;
-            //SystemNavigationManager.GetForCurrentView().BackRequested += GestureService_BackRequested;
-            _logger = App.Current.Container.Resolve<ILoggerFacade>();
+            _logger = new DebugLogger();
         }
 
         public Dictionary<string, Action<KeyDownEventArgs>> KeyDownCallbacks { get; } = new Dictionary<string, Action<KeyDownEventArgs>>();
@@ -155,7 +151,6 @@ namespace Project2FA.Services
         {
             window.Dispatcher.AcceleratorKeyActivated -= Dispatcher_AcceleratorKeyActivated;
             window.PointerPressed -= CoreWindow_PointerPressed;
-            //SystemNavigationManager.GetForCurrentView().BackRequested -= GestureService_BackRequested;
         }
 
         private void GestureService_BackRequested(object sender, BackRequestedEventArgs e)
