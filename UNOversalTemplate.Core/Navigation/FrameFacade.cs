@@ -137,7 +137,7 @@ namespace UNOversal.Navigation
                 navigate: async () =>
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
                 {
-                    _frame.SetNavigationState(state);
+                    //_frame.SetNavigationState(state);
                     return Equals(_frame.BackStackDepth, original);
                 });
         }
