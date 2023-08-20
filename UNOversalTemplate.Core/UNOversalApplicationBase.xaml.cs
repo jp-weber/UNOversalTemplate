@@ -26,12 +26,13 @@ namespace UNOversal
         protected override sealed async void OnBackgroundActivated(BackgroundActivatedEventArgs e) => await InternalStartAsync(new ApplicationArgs(e, StartKinds.Background));
 #endif
         protected override sealed async void OnLaunched(LaunchActivatedEventArgs e) => await InternalStartAsync(new ApplicationArgs(e, StartKinds.Launch));
-        
 
+#if WINDOWS_UWP
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
         {
             base.OnWindowCreated(args);
             //WindowService.ForwardWindowCreated(args);
         }
+#endif
     }
 }

@@ -18,8 +18,11 @@ namespace UNOversal.Services.Dialogs
         /// <summary>
         /// Shows a modal dialog.
         /// </summary>
-        /// <param name="name">The dialog to show.</param>
+        /// <param name="dialog"></param>
         /// <param name="parameters">The parameters to pass to the dialog.</param>
+        /// <param name="timeout"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         Task<ContentDialogResult> ShowDialogAsync(ContentDialog dialog, IDialogParameters parameters, TimeSpan? timeout = null, CancellationToken? token = null);
 
         /// <summary>
