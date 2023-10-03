@@ -193,6 +193,10 @@ namespace UNOversal.Services.File
         public async Task<bool> WriteStringAsync(string key, string value, StorageStrategies location = StorageStrategies.Local,
             CreationCollisionOption option = CreationCollisionOption.ReplaceExisting, string path = null)
         {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentNullException();
+            }
             // create file
             var file = await CreateFileAsync(key, location, option, path);
             // save string to file
