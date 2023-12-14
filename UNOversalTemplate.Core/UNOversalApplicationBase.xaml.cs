@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Windows.ApplicationModel.Activation;
-using Uno.Extensions.Maui.Platform;
-
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml;
@@ -11,6 +9,10 @@ using LaunchActivatedEventArgs = Windows.ApplicationModel.Activation.LaunchActiv
 #else
 using Microsoft.UI.Xaml;
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
+#endif
+
+#if MAUI_EMBEDDING
+using Uno.Extensions.Maui.Platform;
 #endif
 
 namespace UNOversal

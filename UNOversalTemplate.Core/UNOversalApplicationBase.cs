@@ -24,6 +24,9 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using WinUIWindow = Microsoft.UI.Xaml.Window;
+#endif
+
+#if MAUI_EMBEDDING
 using Uno.Extensions.Maui.Platform;
 #endif
 
