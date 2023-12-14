@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Windows.ApplicationModel.Activation;
+using Uno.Extensions.Maui.Platform;
+
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml;
@@ -13,7 +15,11 @@ using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
 
 namespace UNOversal
 {
+#if !MAUI_EMBEDDING
     public abstract partial class UNOversalApplicationBase : Application
+#else
+    public abstract partial class UNOversalApplicationBase : EmbeddingApplication
+#endif
     {
         protected override sealed async void OnActivated(IActivatedEventArgs e) => await InternalStartAsync(new ApplicationArgs(e, StartKinds.Activate));
 #if WINDOWS_UWP

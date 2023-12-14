@@ -24,6 +24,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using WinUIWindow = Microsoft.UI.Xaml.Window;
+using Uno.Extensions.Maui.Platform;
 #endif
 
 namespace UNOversal
@@ -34,9 +35,17 @@ namespace UNOversal
     /// <remarks>
     /// This class must be overridden to provide application specific configuration.
     /// </remarks>
+#if !MAUI_EMBEDDING
     public abstract partial class UNOversalApplicationBase : Application
+#else
+    public abstract partial class UNOversalApplicationBase : EmbeddingApplication
+#endif
     {
+#if !MAUI_EMBEDDING
         public static new UNOversalApplicationBase Current => (UNOversalApplicationBase)Application.Current;
+#else
+        public static new UNOversalApplicationBase Current => (UNOversalApplicationBase)EmbeddingApplication.Current;
+#endif
         private static readonly SemaphoreSlim _startSemaphore = new SemaphoreSlim(1, 1);
         private readonly bool _logStartingEvents = false;
         IContainerExtension _containerExtension;
