@@ -16,9 +16,9 @@ namespace UNOversal.Services.Settings
 
         public bool EnableCompression { get; set; } = false;
 
-        public (bool successful, T result) Read<T>(string key)
+        public (bool successful, T result) Read<T>(string key, string containerName = "")
         {
-            var (successful, result) = _adapter.ReadString(key);
+            var (successful, result) = _adapter.ReadString(key, containerName);
             if (!successful)
             {
                 return (false, default(T));
@@ -26,9 +26,9 @@ namespace UNOversal.Services.Settings
             return (true,_serializationService.Deserialize<T>(result));
         }
 
-        public T SafeRead<T>(string key, T otherwise)
+        public T SafeRead<T>(string key, T otherwise, string containerName = "")
         {
-            if (TryRead<T>(key, out var value))
+            if (TryRead<T>(key, out var value, containerName))
             {
                 return value;
             }
@@ -39,9 +39,9 @@ namespace UNOversal.Services.Settings
         }
 
 
-        public T SafeReadEnum<T>(string key, T otherwise) where T : struct
+        public T SafeReadEnum<T>(string key, T otherwise, string containerName = "") where T : struct
         {
-            if (TryReadEnum<T>(key, out var value))
+            if (TryReadEnum<T>(key, out var value, containerName))
             {
                 return value;
             }
@@ -51,11 +51,11 @@ namespace UNOversal.Services.Settings
             }
         }
 
-        public bool TryRead<T>(string key, out T value)
+        public bool TryRead<T>(string key, out T value, string containerName = "")
         {
             try
             {
-                var (successful, result) = Read<T>(key);
+                var (successful, result) = Read<T>(key, containerName);
                 if (successful)
                 {
                     value = result;
@@ -67,18 +67,18 @@ namespace UNOversal.Services.Settings
                     return false;
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 value = default;
                 return false;
             }
         }
 
-        public bool TryReadEnum<T>(string key, out T value) where T : struct
+        public bool TryReadEnum<T>(string key, out T value, string containerName = "") where T : struct
         {
             try
             {
-                if (TryReadString(key, out var setting))
+                if (TryReadString(key, out var setting, containerName))
                 {
                     if (Enum.TryParse<T>(setting, out var result))
                     {
@@ -89,16 +89,16 @@ namespace UNOversal.Services.Settings
                 value = default;
                 return false;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 value = default(T);
                 return false;
             }
         }
 
-        public string ReadString(string key)
+        public string ReadString(string key, string containerName = "")
         {
-            var (successful, result) = _adapter.ReadString(key);
+            var (successful, result) = _adapter.ReadString(key, containerName);
             if (successful)
             {
                 return result;
@@ -108,14 +108,14 @@ namespace UNOversal.Services.Settings
 
         }
 
-        public bool TryReadString(string key, out string value)
+        public bool TryReadString(string key, out string value, string containerName = "")
         {
             try
             {
-                value = ReadString(key);
+                value = ReadString(key, containerName);
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 value = string.Empty;
                 return false;
@@ -135,7 +135,7 @@ namespace UNOversal.Services.Settings
                 Write(key, value);
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -159,7 +159,7 @@ namespace UNOversal.Services.Settings
                 WriteString(key, value);
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return false;
             }

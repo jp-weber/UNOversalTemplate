@@ -22,7 +22,7 @@ namespace UNOversal.Services.Settings
             _helper = fileService;
         }
 
-        public (bool successful, string result) ReadString(string key)
+        public (bool successful, string result) ReadString(string key, string containerName = "")
         {
             try
             {

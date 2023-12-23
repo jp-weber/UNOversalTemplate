@@ -16,19 +16,44 @@ namespace UNOversal.Services.Settings
         public ISerializationService SerializationService { get; }
 
 
-        public (bool successful, string result) ReadString(string key)
+        public (bool successful, string result) ReadString(string key, string containerName = "")
         {
-            if (_container.Values.ContainsKey(key))
+            if (string.IsNullOrWhiteSpace(containerName))
             {
-                return (true, _container.Values[key].ToString());
+                if (_container.Values.ContainsKey(key))
+                {
+                    return (true, _container.Values[key].ToString());
+                }
+                else
+                {
+                    return (false, string.Empty);
+                }
             }
             else
             {
-                return (false, string.Empty);
+                if (_container.Containers.ContainsKey(containerName))
+                {
+                    if (_container.Containers[containerName].Values.ContainsKey(key))
+                    {
+                        return (true, _container.Containers[containerName].Values[key].ToString());
+                    }
+                    else
+                    {
+                        return (false, string.Empty);
+                    }
+                }
+                else
+                {
+                    return (false, string.Empty);
+                }
             }
         }
 
+
         public void WriteString(string key, string value)
-            => _container.Values[key] = value;
+        {
+            _container.Values[key] = value;
+        }
+            
     }
 }
