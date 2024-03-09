@@ -1,6 +1,3 @@
-
-
-
 namespace UNOversal.Logging
 {
     /// <summary>
