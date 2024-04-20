@@ -123,9 +123,6 @@ Global
 		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{a6a8cd11-2f5a-453c-9568-995bcfb27bd4}*SharedItemsImports = 5
 		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{a6a8cd11-2f5a-453c-9568-995bcfb27bd4}*SharedItemsImports = 5
 		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{a6a8cd11-2f5a-453c-9568-995bcfb27bd4}*SharedItemsImports = 5
-		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{b06bd894-413c-4c0b-a073-823496a7719c}*SharedItemsImports = 5
-		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{b06bd894-413c-4c0b-a073-823496a7719c}*SharedItemsImports = 5
-		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{b06bd894-413c-4c0b-a073-823496a7719c}*SharedItemsImports = 5
 		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{d1825e4f-d418-4d2f-9456-66badc726d1a}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

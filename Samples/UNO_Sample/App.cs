@@ -45,7 +45,7 @@ namespace UNO_Sample
 
         public override async Task OnStartAsync(IApplicationArgs args)
         {
-
+            App.Current = MainWindow ?? new Window();
         }
 
         public override void RegisterTypes(IContainerRegistry containerRegistry)
