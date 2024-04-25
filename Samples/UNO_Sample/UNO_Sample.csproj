@@ -22,7 +22,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Uno.Core.Extensions.Logging.Singleton" Version="4.0.1" />
-    <PackageReference Include="Uno.WinUI" Version="5.1.104" />
+    <PackageReference Include="Uno.Toolkit.WinUI" Version="6.1.0-dev.10" />
+    <PackageReference Include="Uno.Toolkit.WinUI.Material" Version="6.1.0-dev.10" />
+    <PackageReference Include="Uno.WinUI" Version="5.3.0-dev.526" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0-windows10.0.18362'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.3" />
@@ -41,17 +43,24 @@
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Views\BlankPage.xaml" />
+    <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\ShellPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <UpToDateCheckInput Remove="Views\BlankPage.xaml" />
+    <UpToDateCheckInput Remove="Views\LoginPage.xaml" />
     <UpToDateCheckInput Remove="Views\MainPage.xaml" />
     <UpToDateCheckInput Remove="Views\ShellPage.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Page Update="Views\BlankPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

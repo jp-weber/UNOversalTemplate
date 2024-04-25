@@ -26,5 +26,11 @@ namespace UNO_Sample.Views
         {
             this.InitializeComponent();
         }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await App.ShellPageInstance.ViewModel.NavigationService.NavigateAsync("/" + nameof(BlankPage));
+            App.MainWindow.Content = new LoginPage();
+        }
     }
 }

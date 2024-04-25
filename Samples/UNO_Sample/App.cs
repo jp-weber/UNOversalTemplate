@@ -14,6 +14,10 @@ using UNOversal.Services.Secrets;
 using UNOversal.Services.Settings;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using WinUIWindow = Microsoft.UI.Xaml.Window;
+using WindowActivatedEventArgs = Microsoft.UI.Xaml.WindowActivatedEventArgs;
+using UNO_Sample.ViewModels;
+using UNOversal.Ioc;
 
 namespace UNO_Sample
 {
@@ -41,11 +45,23 @@ namespace UNO_Sample
         /// <summary>
         /// Gets the main window of the app.
         /// </summary>
-        internal static Window MainWindow { get; private set; }
+        internal static WinUIWindow? MainWindow { get; private set; }
 
         public override async Task OnStartAsync(IApplicationArgs args)
         {
-            App.Current = MainWindow ?? new Window();
+            MainWindow = WinUIWindow.Current;
+            if (MainWindow.Content is not ShellPage shellPage)
+            {
+                MainWindow.Content = CreateShell();
+                await ShellPageInstance.ViewModel.NavigationService.NavigateAsync("/" + nameof(MainPage));
+            }
+            else
+            {
+                MainWindow.Content = new LoginPage();
+            }
+            MainWindow.Activate();
+
+
         }
 
         public override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -54,6 +70,13 @@ namespace UNO_Sample
             containerRegistry.RegisterSingleton<IFileService, FileService>();
             containerRegistry.RegisterSingleton<ISecretService, SecretService>();
             containerRegistry.RegisterSingleton<ISettingsHelper, SettingsHelper>();
+
+            containerRegistry.RegisterSingleton<ShellPage>();
+            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<BlankPage, BlankPageViewModel>();
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+
+
         }
 
         protected override UIElement CreateShell()

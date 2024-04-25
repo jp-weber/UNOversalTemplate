@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using UNO_Sample.ViewModels;
-using UNOversal.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -19,24 +17,17 @@ using Windows.Foundation.Collections;
 
 namespace UNO_Sample.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class ShellPage : Page
+    public sealed partial class LoginPage : Page
     {
-        public NavigationView ShellViewInternal { get; private set; }
-
-        public ShellPageViewModel ViewModel { get; } = new ShellPageViewModel();
-
-        public Frame MainFrame { get; }
-
-        public ShellPage()
+        public LoginPage()
         {
             this.InitializeComponent();
+        }
 
-            ShellViewInternal = ShellView;
-            ShellView.Content = MainFrame = new Frame();
-            ViewModel.NavigationService = NavigationFactory.Create(MainFrame);
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            App.MainWindow.Content = App.ShellPageInstance;
+            await App.ShellPageInstance.ViewModel.NavigationService.NavigateAsync("/" + nameof(MainPage));
         }
     }
 }
