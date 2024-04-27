@@ -1,0 +1,53 @@
+﻿<Page
+    x:Class="UNO_Sample.Views.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UNO_Sample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utu="using:Uno.Toolkit.UI"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <NavigationView x:Name="ShellView">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    Tag="/MainPage"
+                    Icon="Permissions" />
+            </NavigationView.MenuItems>
+        </NavigationView>
+        <utu:TabBar 
+            x:Name="MobileTabBar"
+            Grid.Row="1">
+            <utu:TabBar.Items>
+                <utu:TabBarItem 
+                    x:Uid="ShellPageAccountsNavigation"
+                    Tag="/AccountCodePage">
+                    <utu:TabBarItem.Icon>
+                        <FontIcon Glyph="&#xE192;" />
+                    </utu:TabBarItem.Icon>
+                </utu:TabBarItem>
+                <utu:TabBarItem 
+                    x:Uid="ShellPageSearchNavigation"
+                    Tag="SearchPage">
+                    <utu:TabBarItem.Icon>
+                        <FontIcon Glyph="&#xe721;" />
+                    </utu:TabBarItem.Icon>
+                </utu:TabBarItem>
+
+                <utu:TabBarItem 
+                    x:Uid="ShellPageSettingsNavigation"
+                    Tag="SettingPage">
+                    <utu:TabBarItem.Icon>
+                        <FontIcon Glyph="&#xE713;" />
+                    </utu:TabBarItem.Icon>
+                </utu:TabBarItem>
+            </utu:TabBar.Items>
+        </utu:TabBar>
+    </Grid>
+</Page>

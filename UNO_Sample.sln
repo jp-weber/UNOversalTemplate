@@ -1,0 +1,146 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{311E3662-CBDE-40E4-BD92-416312D75DB2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UNO_Sample", "Samples\UNO_Sample\UNO_Sample\UNO_Sample.csproj", "{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UNO_Sample.MauiControls", "Samples\UNO_Sample\UNO_Sample.MauiControls\UNO_Sample.MauiControls.csproj", "{3F869AEB-1882-472A-B7DD-8EA6A2379565}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{086AEAB3-E76A-4B8C-9D8E-1BE6FC478C31}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UNOversalTemplate.Core", "UNOversalTemplate.Core\UNOversalTemplate.Core.shproj", "{D1825E4F-D418-4D2F-9456-66BADC726D1A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UNOversalTemplate.IoC.DryIoC", "UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.shproj", "{498AE0AD-1BD1-4139-ADFF-8DC51F73643E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UNOversalTemplate.Services", "UNOversalTemplate.Services\UNOversalTemplate.Services.shproj", "{879BB3B5-F4A4-4F81-85C8-AA2328BA1454}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_Sample", "Samples\UWP_Sample\UWP_Sample.csproj", "{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|ARM.Build.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|ARM.Deploy.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|ARM64.Deploy.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|x64.Build.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|x86.Build.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|ARM.ActiveCfg = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|ARM.Build.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|ARM.Deploy.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|ARM64.Build.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|ARM64.Deploy.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|x64.ActiveCfg = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|x64.Build.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|x64.Deploy.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|x86.ActiveCfg = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|x86.Build.0 = Release|Any CPU
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97}.Release|x86.Deploy.0 = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|x64.Build.0 = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Debug|x86.Build.0 = Debug|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|ARM.Build.0 = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|ARM64.Build.0 = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|x64.ActiveCfg = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|x64.Build.0 = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|x86.ActiveCfg = Release|Any CPU
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565}.Release|x86.Build.0 = Release|Any CPU
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|ARM.Build.0 = Debug|ARM
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|ARM.Deploy.0 = Debug|ARM
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|ARM64.Build.0 = Debug|ARM64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|x64.ActiveCfg = Debug|x64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|x64.Build.0 = Debug|x64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|x64.Deploy.0 = Debug|x64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|x86.ActiveCfg = Debug|Win32
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|x86.Build.0 = Debug|Win32
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Debug|x86.Deploy.0 = Debug|Win32
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|ARM.ActiveCfg = Release|ARM
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|ARM.Build.0 = Release|ARM
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|ARM.Deploy.0 = Release|ARM
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|ARM64.ActiveCfg = Release|ARM64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|ARM64.Build.0 = Release|ARM64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|ARM64.Deploy.0 = Release|ARM64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|x64.ActiveCfg = Release|x64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|x64.Build.0 = Release|x64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|x64.Deploy.0 = Release|x64
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|x86.ActiveCfg = Release|Win32
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|x86.Build.0 = Release|Win32
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE}.Release|x86.Deploy.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{280C53FE-B1E9-4322-AD9D-B3D5940A4A97} = {086AEAB3-E76A-4B8C-9D8E-1BE6FC478C31}
+		{3F869AEB-1882-472A-B7DD-8EA6A2379565} = {086AEAB3-E76A-4B8C-9D8E-1BE6FC478C31}
+		{4AA230B1-0FA3-40ED-8504-F4BE3361ABDE} = {086AEAB3-E76A-4B8C-9D8E-1BE6FC478C31}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FB46B5D-B1D0-433C-AD38-A3F1818CDD65}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{280c53fe-b1e9-4322-ad9d-b3d5940a4a97}*SharedItemsImports = 5
+		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{280c53fe-b1e9-4322-ad9d-b3d5940a4a97}*SharedItemsImports = 5
+		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{280c53fe-b1e9-4322-ad9d-b3d5940a4a97}*SharedItemsImports = 5
+		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{498ae0ad-1bd1-4139-adff-8dc51f73643e}*SharedItemsImports = 13
+		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{4aa230b1-0fa3-40ed-8504-f4be3361abde}*SharedItemsImports = 4
+		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{4aa230b1-0fa3-40ed-8504-f4be3361abde}*SharedItemsImports = 4
+		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{4aa230b1-0fa3-40ed-8504-f4be3361abde}*SharedItemsImports = 4
+		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{879bb3b5-f4a4-4f81-85c8-aa2328ba1454}*SharedItemsImports = 13
+		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{d1825e4f-d418-4d2f-9456-66badc726d1a}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
