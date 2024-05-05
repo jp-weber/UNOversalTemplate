@@ -1,6 +1,8 @@
-<Application x:Class="UNO_Sample.App"
+﻿<unoApp:UNOversalApplication
+  x:Class="UNO_Sample.App"
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:unoApp="using:UNOversal.DryIoc"
        xmlns:wasm="http://platform.uno/wasm"
        xmlns:utum="using:Uno.Toolkit.UI.Material"
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -28,4 +30,4 @@
 
   <!-- Add resources here -->
 
-</Application>
+</unoApp:UNOversalApplication>

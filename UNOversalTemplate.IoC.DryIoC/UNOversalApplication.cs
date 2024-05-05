@@ -2,6 +2,7 @@
 using DryIoc;
 using Prism.Ioc;
 using UNOversal.Ioc;
+using ExceptionExtensions = System.ExceptionExtensions;
 
 namespace UNOversal.DryIoc
 {

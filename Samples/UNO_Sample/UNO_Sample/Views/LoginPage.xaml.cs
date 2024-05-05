@@ -26,7 +26,7 @@ public sealed partial class LoginPage : Page
 
     private async void Button_Click(object sender, RoutedEventArgs e)
     {
-        App.MainWindow.Content = App.ShellPageInstance;
         await App.ShellPageInstance.ViewModel.NavigationService.NavigateAsync("/" + nameof(MainPage));
+        App.ShellPageInstance.ViewModel.TabBarIsVisible = false;
     }
 }

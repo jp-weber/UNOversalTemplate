@@ -29,7 +29,7 @@ public sealed partial class MainPage : Page
 
     private async void Button_Click(object sender, RoutedEventArgs e)
     {
-        await App.ShellPageInstance.ViewModel.NavigationService.NavigateAsync("/" + nameof(BlankPage));
-        App.MainWindow.Content = new LoginPage();
+        await App.ShellPageInstance.ViewModel.NavigationService.NavigateAsync("/" + nameof(LoginPage));
+        //App.MainWindow.Content = new LoginPage();
     }
 }

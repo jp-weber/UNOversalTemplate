@@ -4,6 +4,7 @@ using DryIoc;
 using UNOversal.Ioc;
 using Prism.Ioc.Internals;
 using Prism.Ioc;
+using ExceptionExtensions = System.ExceptionExtensions;
 
 namespace UNOversal.DryIoc
 {
