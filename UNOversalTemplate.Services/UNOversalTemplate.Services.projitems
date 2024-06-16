@@ -25,6 +25,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Gesture\Default\GestureService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gesture\Abstractions\IGestureService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gesture\Default\KeyDownEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\ILoggingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\LoggingPreferEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\LoggingService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\AvailabilityChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\ConnectionTypes.enum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\Abstractions\INetworkService.cs" />

@@ -63,4 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\BindingUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\XamlUtilities.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Extension\" />
+  </ItemGroup>
 </Project>
