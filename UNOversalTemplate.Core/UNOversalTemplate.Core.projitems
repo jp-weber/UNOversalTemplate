@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\MvvmHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension\ApplicationThemeExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IApplicationArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\IContainerExtensionExtensions.cs" />
@@ -62,8 +63,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplicationBase.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\BindingUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\XamlUtilities.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Extension\" />
   </ItemGroup>
 </Project>
