@@ -16,7 +16,7 @@ namespace UNOversal.Services.Settings
 
         public bool EnableCompression { get; set; } = false;
 
-        public (bool successful, T result) Read<T>(string key, string containerName = string.Empty)
+        public (bool successful, T result) Read<T>(string key, string containerName = "")
         {
             var (successful, result) = _adapter.ReadString(key, containerName);
             if (!successful)
@@ -26,7 +26,7 @@ namespace UNOversal.Services.Settings
             return (true,_serializationService.Deserialize<T>(result));
         }
 
-        public T SafeRead<T>(string key, T otherwise, string containerName = string.Empty)
+        public T SafeRead<T>(string key, T otherwise, string containerName = "")
         {
             if (TryRead<T>(key, out var value, containerName))
             {
@@ -39,7 +39,7 @@ namespace UNOversal.Services.Settings
         }
 
 
-        public T SafeReadEnum<T>(string key, T otherwise, string containerName = string.Empty) where T : struct
+        public T SafeReadEnum<T>(string key, T otherwise, string containerName = "") where T : struct
         {
             if (TryReadEnum<T>(key, out var value, containerName))
             {
@@ -51,7 +51,7 @@ namespace UNOversal.Services.Settings
             }
         }
 
-        public bool TryRead<T>(string key, out T value, string containerName = string.Empty)
+        public bool TryRead<T>(string key, out T value, string containerName = "")
         {
             try
             {
@@ -74,7 +74,7 @@ namespace UNOversal.Services.Settings
             }
         }
 
-        public bool TryReadEnum<T>(string key, out T value, string containerName = string.Empty) where T : struct
+        public bool TryReadEnum<T>(string key, out T value, string containerName = "") where T : struct
         {
             try
             {
@@ -96,7 +96,7 @@ namespace UNOversal.Services.Settings
             }
         }
 
-        public string ReadString(string key, string containerName = string.Empty)
+        public string ReadString(string key, string containerName = "")
         {
             var (successful, result) = _adapter.ReadString(key, containerName);
             if (successful)
@@ -108,7 +108,7 @@ namespace UNOversal.Services.Settings
 
         }
 
-        public bool TryReadString(string key, out string value, string containerName = string.Empty)
+        public bool TryReadString(string key, out string value, string containerName = "")
         {
             try
             {
