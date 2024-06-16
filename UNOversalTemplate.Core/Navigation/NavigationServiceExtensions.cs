@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UNOversal.Services.Gesture;
+
 
 #if WINDOWS_UWP
-using Project2FA.Services;
+using UNOversal.Services.WindowService;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 #else

@@ -9,7 +9,7 @@ using Windows.UI.Xaml;
 using Microsoft.UI.Xaml;
 #endif
 
-namespace Project2FA.Services
+namespace UNOversal.Services.Gesture
 {
     public class KeyDownEventArgs : EventArgs
     {

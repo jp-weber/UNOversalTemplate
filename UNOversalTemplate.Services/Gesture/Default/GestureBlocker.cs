@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project2FA.Services
+namespace UNOversal.Services.Gesture
 {
     public enum BlockerPeriod { Always, Once }
 

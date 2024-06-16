@@ -42,6 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Adapters\LocalFileSettingsAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Adapters\LocalSettingsAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Default\SettingsHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Window\WindowService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Gesture\Abstractions\" />

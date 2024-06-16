@@ -12,7 +12,7 @@ using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 #endif
 
-namespace Project2FA.Services
+namespace UNOversal.Services.Gesture
 {
     public class GestureService : IGestureService
     {

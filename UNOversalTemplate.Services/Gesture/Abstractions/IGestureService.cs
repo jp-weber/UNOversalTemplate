@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Project2FA.Services
+namespace UNOversal.Services.Gesture
 {
     public interface IGestureService
     {
