@@ -13,7 +13,7 @@ namespace UNOversal.Services.Logging
     {
         private const string _logName = "AppLog.log";
         private string _timeStemp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " - ";
-        
+
         private IFileService FileService { get; }
 
         public LoggingService(IFileService fileService)
@@ -30,14 +30,14 @@ namespace UNOversal.Services.Logging
         {
             if (loggingPreferEnum == LoggingPreferEnum.Full)
             {
-                if(await FileService.FileExistsAsync(_logName, ApplicationData.Current.LocalFolder))
+                if (await FileService.FileExistsAsync(_logName, ApplicationData.Current.LocalFolder))
                 {
                     var file = await ApplicationData.Current.LocalFolder.GetFileAsync(_logName);
                     await FileIO.AppendTextAsync(file, _timeStemp + message);
                 }
                 else
                 {
-                    var file =  await ApplicationData.Current.LocalFolder.CreateFileAsync(_logName);
+                    var file =  await ApplicationData.Current.LocalFolder.CreateFileAsync(Constants.LogName);
                     await FileIO.AppendTextAsync(file, _timeStemp + message);
                 }
             }
@@ -76,7 +76,7 @@ namespace UNOversal.Services.Logging
         private async Task WriteExceptionLog(Exception exc, StorageFile file)
         {
 #if WINDOWS_UWP
-            await FileIO.AppendTextAsync(file, _timeStemp +  "uptime " + Microsoft.Toolkit.Uwp.Helpers.SystemInformation.Instance.AppUptime + "\n");
+            await FileIO.AppendTextAsync(file, _timeStemp + "uptime " + Microsoft.Toolkit.Uwp.Helpers.SystemInformation.Instance.AppUptime + "\n");
 #endif
             await FileIO.AppendTextAsync(file, _timeStemp + exc.Source + " - " + exc.Message + "\n");
             await FileIO.AppendTextAsync(file, "Log - " + exc.ToString() + "\n");
