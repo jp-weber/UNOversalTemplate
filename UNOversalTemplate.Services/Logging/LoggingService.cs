@@ -1,17 +1,17 @@
-﻿
-using Project2FA.Core;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using UNOversal.Services.File;
 using Windows.Storage;
 
 namespace UNOversal.Services.Logging
 {
+
     /// <summary>
     /// Service for logging of exception and custom messages
     /// </summary>
     public class LoggingService : ILoggingService
     {
+        private const string _logName = "AppLog.log";
         private string _timeStemp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " - ";
         
         private IFileService FileService { get; }
@@ -30,14 +30,14 @@ namespace UNOversal.Services.Logging
         {
             if (loggingPreferEnum == LoggingPreferEnum.Full)
             {
-                if(await FileService.FileExistsAsync(Constants.LogName, ApplicationData.Current.LocalFolder))
+                if(await FileService.FileExistsAsync(_logName, ApplicationData.Current.LocalFolder))
                 {
-                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(Constants.LogName);
+                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(_logName);
                     await FileIO.AppendTextAsync(file, _timeStemp + message);
                 }
                 else
                 {
-                    var file =  await ApplicationData.Current.LocalFolder.CreateFileAsync(Constants.LogName);
+                    var file =  await ApplicationData.Current.LocalFolder.CreateFileAsync(_logName);
                     await FileIO.AppendTextAsync(file, _timeStemp + message);
                 }
             }
@@ -53,15 +53,15 @@ namespace UNOversal.Services.Logging
             if (loggingPreferEnum == LoggingPreferEnum.Simple ||
                 loggingPreferEnum == LoggingPreferEnum.Full)
             {
-                if (await FileService.FileExistsAsync(Constants.LogName, ApplicationData.Current.LocalFolder))
+                if (await FileService.FileExistsAsync(_logName, ApplicationData.Current.LocalFolder))
                 {
-                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(Constants.LogName);
+                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(_logName);
                     await WriteExceptionLog(exc, file);
 
                 }
                 else
                 {
-                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(Constants.LogName);
+                    var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(_logName);
                     await WriteExceptionLog(exc, file);
                 }
             }

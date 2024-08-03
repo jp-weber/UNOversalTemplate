@@ -62,6 +62,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplicationBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplicationBase.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\BindingUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\WindowDisplayInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\WindowDisplayMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\XamlUtilities.cs" />
   </ItemGroup>
 </Project>
