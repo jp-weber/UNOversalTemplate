@@ -37,7 +37,7 @@ namespace UNOversal.Services.Logging
                 }
                 else
                 {
-                    var file =  await ApplicationData.Current.LocalFolder.CreateFileAsync(Constants.LogName);
+                    var file =  await ApplicationData.Current.LocalFolder.CreateFileAsync(_logName);
                     await FileIO.AppendTextAsync(file, _timeStemp + message);
                 }
             }
