@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\MvvmHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extension\ApplicationThemeExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StorageFileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IApplicationArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\IContainerExtensionExtensions.cs" />
