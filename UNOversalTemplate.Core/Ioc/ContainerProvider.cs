@@ -1,6 +1,4 @@
-﻿using Prism.Ioc;
-
-namespace UNOversal.Ioc
+﻿namespace UNOversal.Ioc
 {
     /// <summary>
     /// Provides Types and Services registered with the Container
@@ -42,7 +40,7 @@ namespace UNOversal.Ioc
     /// </ContentPage>
     /// ]]>
     /// </example>
-    public class ContainerProvider<T>
+    public partial class ContainerProvider<T>
     {
         /// <summary>
         /// The Name used to register the type with the Container

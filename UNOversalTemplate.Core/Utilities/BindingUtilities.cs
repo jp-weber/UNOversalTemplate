@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using UNOversal.Services.Logging;
-using Prism.Ioc;
+using UNOversal.Ioc;
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml.Controls;

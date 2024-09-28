@@ -1,4 +1,4 @@
-﻿using Prism.Common;
+﻿using UNOversal.Common;
 
 namespace UNOversal.Services.Dialogs
 {

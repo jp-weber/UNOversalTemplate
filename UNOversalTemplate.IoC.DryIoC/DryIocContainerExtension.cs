@@ -2,9 +2,8 @@ using System;
 using System.Linq;
 using DryIoc;
 using UNOversal.Ioc;
-using Prism.Ioc.Internals;
-using Prism.Ioc;
 using ExceptionExtensions = System.ExceptionExtensions;
+using UNOversal.Ioc.Internals;
 
 namespace UNOversal.DryIoc
 {

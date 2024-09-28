@@ -1,5 +1,4 @@
 ﻿using DryIoc;
-using Prism.Ioc;
 using UNOversal.Ioc;
 
 namespace UNOversal.DryIoc

@@ -15,7 +15,7 @@ namespace UNOversal.Common
     /// <summary>
     /// Helper class for MVVM.
     /// </summary>
-    public static class MvvmHelpers
+    public static partial class MvvmHelpers
     {
         internal static void AutowireViewModel(object viewOrViewModel)
         {

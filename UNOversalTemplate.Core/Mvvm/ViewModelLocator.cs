@@ -3,7 +3,6 @@ using Windows.UI.Xaml;
 #else
 using Microsoft.UI.Xaml;
 #endif
-using Prism.Mvvm;
 
 namespace UNOversal.Mvvm
 {

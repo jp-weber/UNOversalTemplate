@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace UNOversal.Navigation
 {
-    public class NavigationQueue : Queue<INavigationPath>
+    public sealed partial class NavigationQueue : Queue<INavigationPath>
     {
         public NavigationQueue(IEnumerable<INavigationPath> collection)
             : base(collection.OrderBy(x => x.Index))

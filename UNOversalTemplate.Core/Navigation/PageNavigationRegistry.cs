@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace UNOversal.Navigation
 {
-    public static class PageNavigationRegistry
+    public static partial class PageNavigationRegistry
     {
         static Dictionary<string, PageNavigationInfo> _pageRegistrationCache = new Dictionary<string, PageNavigationInfo>();
 
