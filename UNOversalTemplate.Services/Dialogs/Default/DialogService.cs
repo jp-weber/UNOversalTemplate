@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Prism.Common;
-using Prism.Ioc;
+using UNOversal.Ioc;
 using UNOversal.Common;
 #if WINDOWS_UWP
 using Windows.UI.Xaml.Controls;

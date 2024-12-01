@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Prism.Events;
+using UNOversal.Events;
 
 namespace UNOversal.Services.Network
 {

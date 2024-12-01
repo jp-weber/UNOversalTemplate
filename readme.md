@@ -1,6 +1,6 @@
 ## About UNOversalTemplate
 
-UNOversalTemplate is a template for the [Uno platform](https://github.com/unoplatform/uno) based on [PrismLibrary/Prism](https://github.com/PrismLibrary/Prism) and a fork of [Template10](https://github.com/2fast-team/Template10?organization=2fast-team&organization=2fast-team). Both the UWP and WinUI templates are supported, so that an existing UWP app can use the UNOversalTemplate template and on other hand the mobile apps can use the newer WinUI template in UNOversalTemplate. The current goal is to keep the functionality as close to UWP as possible. This also goes hand in hand with the navigation service from Template10, where the service is built on the basis of the normal navigation.
+UNOversalTemplate is a template for the [Uno platform](https://github.com/unoplatform/uno) based on [PrismLibrary/Prism](https://github.com/PrismLibrary/Prism) v8.1.97 and a fork of [Template10](https://github.com/2fast-team/Template10?organization=2fast-team&organization=2fast-team). Both the UWP and WinUI templates are supported, so that an existing UWP app can use the UNOversalTemplate template and on other hand the mobile apps can use the newer WinUI template in UNOversalTemplate. The current goal is to keep the functionality as close to UWP as possible. This also goes hand in hand with the navigation service from Template10, where the service is built on the basis of the normal navigation.
 
 ### Features
 - latest Uno Platform version is supported
