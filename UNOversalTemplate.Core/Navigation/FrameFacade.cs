@@ -13,16 +13,15 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Frame = Microsoft.UI.Xaml.Controls.Frame;
 #endif
-using Prism.Ioc;
-using Prism.Mvvm;
 using UNOversal.Logging;
 using UNOversal.Mvvm;
 using Windows.UI.Core;
+using UNOversal.Ioc;
 
 
 namespace UNOversal.Navigation
 {
-    public class FrameFacade : IFrameFacade, IFrameFacade2
+    public partial class FrameFacade : IFrameFacade, IFrameFacade2
     {
         private readonly bool _logStartingEvents = true;
 

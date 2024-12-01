@@ -76,7 +76,7 @@ namespace UNOversal.Services.Logging
         private async Task WriteExceptionLog(Exception exc, StorageFile file)
         {
 #if WINDOWS_UWP
-            //await FileIO.AppendTextAsync(file, _timeStemp + "uptime " + SystemInformation.Instance.AppUptime + "\n");
+            await FileIO.AppendTextAsync(file, _timeStemp + "uptime " + Microsoft.Toolkit.Uwp.Helpers.SystemInformation.Instance.AppUptime + "\n");
 #endif
             await FileIO.AppendTextAsync(file, _timeStemp + exc.Source + " - " + exc.Message + "\n");
             await FileIO.AppendTextAsync(file, "Log - " + exc.ToString() + "\n");

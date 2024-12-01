@@ -1,5 +1,4 @@
-﻿using Prism.Navigation;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 #if WINDOWS_UWP

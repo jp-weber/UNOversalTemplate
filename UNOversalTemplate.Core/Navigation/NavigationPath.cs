@@ -4,7 +4,7 @@ using Windows.Foundation;
 
 namespace UNOversal.Navigation
 {
-    public class NavigationPath : INavigationPath
+    public partial class NavigationPath : INavigationPath
     {
         private readonly string _originalString;
 

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Prism.Common;
-using Prism.Ioc;
+using UNOversal.Ioc;
 using UNOversal.Logging;
 
 #if WINDOWS_UWP
@@ -18,7 +17,7 @@ using Frame = Microsoft.UI.Xaml.Controls.Frame;
 
 namespace UNOversal.Navigation
 {
-    public class NavigationService : INavigationService, INavigationService2
+    public sealed partial class NavigationService : INavigationService, INavigationService2
     {
         IFrameFacade INavigationService2.FrameFacade => _frame;
 

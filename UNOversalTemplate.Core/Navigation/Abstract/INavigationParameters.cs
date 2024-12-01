@@ -1,5 +1,4 @@
-﻿
-using Prism.Common;
+﻿using UNOversal.Common;
 
 namespace UNOversal.Navigation
 {

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Prism.Common;
-using Prism.Events;
-using Prism.Ioc;
-using Prism.Modularity;
-using Prism.Mvvm;
 using System.Threading.Tasks;
 using UNOversal.Logging;
 using System.Diagnostics;
@@ -12,7 +6,8 @@ using System.Threading;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Activation;
 using UNOversal.Ioc;
-using UNOversal.Modularity;
+using UNOversal.Mvvm;
+using UNOversal.Events;
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml;
@@ -40,7 +35,7 @@ namespace UNOversal
         private static readonly SemaphoreSlim _startSemaphore = new SemaphoreSlim(1, 1);
         private readonly bool _logStartingEvents = false;
         IContainerExtension _containerExtension;
-        IModuleCatalog _moduleCatalog;
+        //IModuleCatalog _moduleCatalog;
         private static int _initialized = 0;
         private ILoggerFacade _logger;
 
@@ -78,7 +73,7 @@ namespace UNOversal
             ContainerLocator.SetContainerExtension(CreateContainerExtension);
             Debug.WriteLine("[App.RegisterTypes()]");
             _containerExtension = ContainerLocator.Current;
-            _moduleCatalog = CreateModuleCatalog();
+            //_moduleCatalog = CreateModuleCatalog();
             RegisterRequiredTypes(_containerExtension);
             RegisterTypes(_containerExtension);
 
@@ -91,7 +86,7 @@ namespace UNOversal
             Debug.WriteLine("Dependency container has just been finalized.");
             _containerExtension.FinalizeExtension();
 
-            ConfigureModuleCatalog(_moduleCatalog);
+            //ConfigureModuleCatalog(_moduleCatalog);
 
             //var regionAdapterMappings = _containerExtension.Resolve<RegionAdapterMappings>();
             //ConfigureRegionAdapterMappings(regionAdapterMappings);
@@ -238,10 +233,10 @@ namespace UNOversal
         ///  <remarks>
         /// The base implementation returns a new ModuleCatalog.
         /// </remarks>
-        protected virtual IModuleCatalog CreateModuleCatalog()
-        {
-            return new ModuleCatalog();
-        }
+        //protected virtual IModuleCatalog CreateModuleCatalog()
+        //{
+        //    return new ModuleCatalog();
+        //}
 
         /// <summary>
         /// Registers all types that are required by Prism to function with the container.
@@ -323,7 +318,7 @@ namespace UNOversal
         /// <summary>
         /// Configures the <see cref="IModuleCatalog"/> used by Prism.
         /// </summary>
-        protected virtual void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) { }
+        //protected virtual void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) { }
 
         /// <summary>
         /// Initializes the modules.

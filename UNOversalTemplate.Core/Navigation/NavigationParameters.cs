@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Prism.Common;
+using UNOversal.Common;
 
 namespace UNOversal.Navigation
 {
@@ -9,7 +9,7 @@ namespace UNOversal.Navigation
     /// <remarks>
     /// This class can be used to to pass object parameters during Navigation. 
     /// </remarks>
-    public class NavigationParameters : ParametersBase, INavigationParameters, INavigationParametersInternal
+    public partial class NavigationParameters : ParametersBase, INavigationParameters, INavigationParametersInternal
     {
         private readonly Dictionary<string, object> _internalParameters = new Dictionary<string, object>();
 
