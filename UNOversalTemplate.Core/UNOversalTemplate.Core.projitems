@@ -33,6 +33,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extension\ExceptionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extension\TaskExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extension\TaskExtensions{T}.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationDataStorageHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Structures\OSVersion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\SystemInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IApplicationArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerLocator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerProvider.cs" />
@@ -101,5 +104,6 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Events\Abstracts\" />
     <Folder Include="$(MSBuildThisFileDirectory)Ioc\Abstracts\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Structures\" />
   </ItemGroup>
 </Project>

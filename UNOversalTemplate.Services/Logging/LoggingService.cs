@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using UNOversal.Services.File;
 using Windows.Storage;
+using UNOversal.Helpers;
 
 namespace UNOversal.Services.Logging
 {
@@ -33,12 +34,12 @@ namespace UNOversal.Services.Logging
                 if (await FileService.FileExistsAsync(_logName, ApplicationData.Current.LocalFolder))
                 {
                     var file = await ApplicationData.Current.LocalFolder.GetFileAsync(_logName);
-                    await FileIO.AppendTextAsync(file, _timeStemp + message);
+                    await FileIO.AppendTextAsync(file, _timeStemp + message + "\n");
                 }
                 else
                 {
                     var file =  await ApplicationData.Current.LocalFolder.CreateFileAsync(_logName);
-                    await FileIO.AppendTextAsync(file, _timeStemp + message);
+                    await FileIO.AppendTextAsync(file, _timeStemp + message + "\n");
                 }
             }
         }
@@ -75,9 +76,8 @@ namespace UNOversal.Services.Logging
         /// <returns></returns>
         private async Task WriteExceptionLog(Exception exc, StorageFile file)
         {
-#if WINDOWS_UWP
-            await FileIO.AppendTextAsync(file, _timeStemp + "uptime " + Microsoft.Toolkit.Uwp.Helpers.SystemInformation.Instance.AppUptime + "\n");
-#endif
+
+            await FileIO.AppendTextAsync(file, _timeStemp + "uptime " + SystemInformationHelper.Instance.AppUptime + "\n");
             await FileIO.AppendTextAsync(file, _timeStemp + exc.Source + " - " + exc.Message + "\n");
             await FileIO.AppendTextAsync(file, "Log - " + exc.ToString() + "\n");
         }
