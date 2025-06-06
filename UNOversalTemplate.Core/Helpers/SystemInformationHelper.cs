@@ -16,6 +16,7 @@ using Windows.System;
 using Windows.System.Profile;
 using Windows.System.UserProfile;
 using Windows.UI.Core;
+
 #if WINDOWS_UWP
 using Windows.UI.Xaml;
 #else
