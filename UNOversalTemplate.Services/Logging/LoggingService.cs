@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UNOversal.Services.File;
 using Windows.Storage;
 using UNOversal.Helpers;
+using System.Threading;
 
 namespace UNOversal.Services.Logging
 {
@@ -14,6 +15,19 @@ namespace UNOversal.Services.Logging
     {
         private const string _logName = "AppLog.log";
         private string _timeStemp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " - ";
+
+        private SemaphoreSlim _accessSemaphore;
+        public SemaphoreSlim AccessSemaphore
+        {
+            get
+            {
+                if (_accessSemaphore == null)
+                {
+                    _accessSemaphore = new SemaphoreSlim(1);
+                }
+                return _accessSemaphore;
+            }
+        }
 
         private IFileService FileService { get; }
 
@@ -29,6 +43,7 @@ namespace UNOversal.Services.Logging
         /// <returns></returns>
         public async Task Log(string message, LoggingPreferEnum loggingPreferEnum)
         {
+            await AccessSemaphore.WaitAsync();
             if (loggingPreferEnum == LoggingPreferEnum.Full)
             {
                 if (await FileService.FileExistsAsync(_logName, ApplicationData.Current.LocalFolder))
@@ -42,6 +57,7 @@ namespace UNOversal.Services.Logging
                     await FileIO.AppendTextAsync(file, _timeStemp + message + "\n");
                 }
             }
+            AccessSemaphore.Release();
         }
 
         /// <summary>
@@ -76,10 +92,11 @@ namespace UNOversal.Services.Logging
         /// <returns></returns>
         private async Task WriteExceptionLog(Exception exc, StorageFile file)
         {
-
+            await AccessSemaphore.WaitAsync();
             await FileIO.AppendTextAsync(file, _timeStemp + "uptime " + SystemInformationHelper.Instance.AppUptime + "\n");
             await FileIO.AppendTextAsync(file, _timeStemp + exc.Source + " - " + exc.Message + "\n");
             await FileIO.AppendTextAsync(file, "Log - " + exc.ToString() + "\n");
+            AccessSemaphore.Release();
         }
     }
 }
