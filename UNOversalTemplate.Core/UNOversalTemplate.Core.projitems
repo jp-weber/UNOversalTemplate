@@ -55,7 +55,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logging\EmptyLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\ILoggerFacade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Priority.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\BindableBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ErrorsContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mvvm\PropertySupport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModelBase.cs" />
