@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <Nullable>enable</Nullable>
+    <UseUwp>true</UseUwp>
+    <Platforms>x64;arm64</Platforms>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <PublishAot>true</PublishAot>
+    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
+    <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+    <EnableMsixTooling>true</EnableMsixTooling>
+	<CsWinRTAotWarningLevel>3</CsWinRTAotWarningLevel>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+    <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+    <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
+  </PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="AppPackages\**" />
+		<Compile Remove="BundleArtifacts\**" />
+		<EmbeddedResource Remove="AppPackages\**" />
+		<EmbeddedResource Remove="BundleArtifacts\**" />
+		<None Remove="AppPackages\**" />
+		<None Remove="BundleArtifacts\**" />
+		<Page Remove="AppPackages\**" />
+		<Page Remove="BundleArtifacts\**" />
+		<None Remove="Properties\Default.rd.xml" />
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+		<PRIResource Remove="AppPackages\**" />
+		<PRIResource Remove="BundleArtifacts\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+	  <PackageReference Include="CommunityToolkit.UWP.Helpers" Version="8.2.250402" />
+	  <PackageReference Include="DryIoc.dll" Version="5.4.3" />
+	  <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
+	  <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.3.0-prerelease.251015.2" />
+	</ItemGroup>
+	<Import Project="..\..\UNOversalTemplate.Services\UNOversalTemplate.Services.projitems" Label="Shared" />
+	<Import Project="..\..\UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems" Label="Shared" />
+	<Import Project="..\..\UNOversalTemplate.Core\UNOversalTemplate.Core.projitems" Label="Shared" />
+</Project>

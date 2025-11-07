@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="UnoSample.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UnoSample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utu="using:Uno.Toolkit.UI"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <utu:NavigationBar 
+            Grid.Row="0"
+            MainCommandMode="Action">
+            <utu:NavigationBar.Content>
+                <TextBlock 
+                    VerticalAlignment="Center"
+                    Text="LoginPageTitle"/>
+            </utu:NavigationBar.Content>
+            <utu:NavigationBar.MainCommand>
+                <AppBarButton 
+                    Content="#Back" 
+                    Visibility="Collapsed"
+                    Foreground="{ThemeResource  SystemAccentColor}" />
+            </utu:NavigationBar.MainCommand>
+        </utu:NavigationBar>
+        <StackPanel
+            Grid.Row="1"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+            <TextBlock AutomationProperties.AutomationId="HelloTextBlock"
+          Text="Hello Uno Platform"
+          HorizontalAlignment="Center" />
+            <Button Content="Logout" Click="Button_Click"></Button>
+        </StackPanel>
+    </Grid>
+
+
+</Page>

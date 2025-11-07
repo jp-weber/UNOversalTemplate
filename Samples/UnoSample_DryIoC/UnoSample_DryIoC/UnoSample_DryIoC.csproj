@@ -1,0 +1,41 @@
+<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+
+    <!-- Display name -->
+    <ApplicationTitle>UnoSample_DryIoC</ApplicationTitle>
+    <!-- App Identifier -->
+    <ApplicationId>com.companyname.UnoSample_DryIoC</ApplicationId>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <!-- Package Publisher -->
+    <ApplicationPublisher>JanPhilipp</ApplicationPublisher>
+    <!-- Package Description -->
+    <Description>UnoSample_DryIoC powered by Uno Platform.</Description>
+
+    <!--
+      UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
+      https://aka.platform.uno/singleproject-features
+    -->
+    <UnoFeatures>
+      Material;
+      Dsp;
+      Toolkit;
+      Mvvm;
+      ThemeService;
+    </UnoFeatures>
+  </PropertyGroup>
+  <Import Project="..\..\..\UNOversalTemplate.Services\UNOversalTemplate.Services.projitems" Label="Shared" />
+  <Import Project="..\..\..\UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems" Label="Shared" />
+  <Import Project="..\..\..\UNOversalTemplate.Core\UNOversalTemplate.Core.projitems" Label="Shared" />
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Common" />
+    <PackageReference Include="CommunityToolkit.WinUI.Helpers" />
+    <PackageReference Include="DryIoc.dll" />
+  </ItemGroup>
+
+</Project>
