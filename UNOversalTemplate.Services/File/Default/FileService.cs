@@ -220,7 +220,19 @@ namespace UNOversal.Services.File
             return await FileExistsAsync(key, folder);
         }
 
-
+        /// <summary>
+        /// Creates a file with the specified key in the given storage location, using the provided creation option.
+        /// </summary>
+        /// <remarks>When using the Custom storage location, ensure that the path parameter is provided
+        /// and valid. For other locations, the path parameter is ignored.</remarks>
+        /// <param name="key">The name of the file to create. Cannot be null or empty.</param>
+        /// <param name="location">The storage location where the file will be created. Defaults to Local if not specified.</param>
+        /// <param name="option">The option that determines how to handle the case when a file with the same name already exists.</param>
+        /// <param name="path">The base path to use when the storage location is Custom. Required if location is set to Custom; otherwise,
+        /// ignored.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the created or opened
+        /// StorageFile instance.</returns>
+        /// <exception cref="NotSupportedException">Thrown if the specified storage location is not supported.</exception>
         private async Task<StorageFile> CreateFileAsync(string key, StorageStrategies location = StorageStrategies.Local,
             CreationCollisionOption option = CreationCollisionOption.OpenIfExists, string path = null)
         {
@@ -240,22 +252,48 @@ namespace UNOversal.Services.File
             }
         }
 
+        /// <summary>
+        /// Asynchronously creates a new file with the specified name in the given folder, or opens it if it already
+        /// exists, using the specified collision option.
+        /// </summary>
+        /// <param name="key">The name of the file to create. Cannot be null or empty.</param>
+        /// <param name="folder">The folder in which to create the file. Cannot be null.</param>
+        /// <param name="option">A value that determines how to handle the case when a file with the same name already exists. The default is
+        /// OpenIfExists.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a StorageFile that represents
+        /// the created or opened file.</returns>
         private async Task<StorageFile> CreateFileAsync(string key, 
             StorageFolder folder, CreationCollisionOption option = CreationCollisionOption.OpenIfExists)
         {
             return await folder.CreateFileAsync(key, option);
         }
 
-        private async Task<StorageFile> GetIfFileExistsAsync(string key, StorageFolder folder)
+        /// <summary>
+        /// Attempts to retrieve a file with the specified name from the given folder asynchronously, returning null if
+        /// the file does not exist.
+        /// </summary>
+        /// <param name="key">The name of the file to retrieve from the folder. Cannot be null or empty.</param>
+        /// <param name="folder">The folder in which to search for the file. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the file if it exists;
+        /// otherwise, null.</returns>
+        private async Task<StorageFile?> GetIfFileExistsAsync(string key, StorageFolder folder)
         {
             StorageFile retval;
             try
             {
-                retval = await folder.GetFileAsync(key);
+                if (folder != null)
+                {
+                    retval = await folder.GetFileAsync(key);
+                }
+                else
+                {
+                    return null;
+                }
+                
             }
             catch (System.IO.FileNotFoundException)
             {
-                System.Diagnostics.Debug.WriteLine("GetIfFileExistsAsync:FileNotFoundException");
+                System.Diagnostics.Debug.WriteLine(nameof(GetIfFileExistsAsync) + ":FileNotFoundException");
                 return null;
             }
             return retval;
@@ -299,9 +337,21 @@ namespace UNOversal.Services.File
             return retval;
         }
 
+        /// <summary>
+        /// Serializes the specified object to a string representation.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to serialize.</typeparam>
+        /// <param name="item">The object to serialize. Cannot be null.</param>
+        /// <returns>A string that represents the serialized form of the specified object.</returns>
         private string Serialize<T>(T item)
             => _serializer.Serialize(item);
 
+        /// <summary>
+        /// Deserializes the specified JSON string to an object of type T.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
+        /// <param name="json">The JSON string to deserialize. Cannot be null.</param>
+        /// <returns>An instance of type T that represents the deserialized JSON data.</returns>
         private T Deserialize<T>(string json)
             => _serializer.Deserialize<T>(json);
     }

@@ -2,6 +2,10 @@
 using Windows.UI.Xaml;
 #else
 using Microsoft.UI.Xaml;
+using Windows.ApplicationModel.Activation;
+#endif
+#if NET9_0_OR_GREATER && WINDOWS_UWP
+using WinRT;
 #endif
 
 namespace UNOversal.Mvvm
@@ -49,6 +53,9 @@ namespace UNOversal.Mvvm
         /// </summary>
         /// <param name="view">The View to set the on</param>
         /// <param name="viewModel">The object to use as the for the View</param>
+#if NET9_0_OR_GREATER && WINDOWS_UWP
+        [DynamicWindowsRuntimeCast(typeof(FrameworkElement))]
+#endif
         static void Bind(object view, object viewModel)
         {
             if (view is FrameworkElement element)

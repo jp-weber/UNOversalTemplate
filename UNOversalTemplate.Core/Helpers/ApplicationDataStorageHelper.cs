@@ -14,8 +14,6 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.System;
 
-#nullable enable
-
 namespace UNOversal.Helpers
 {
     /// <summary>
