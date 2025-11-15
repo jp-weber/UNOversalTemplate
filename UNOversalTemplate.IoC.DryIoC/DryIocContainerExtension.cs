@@ -388,7 +388,7 @@ namespace UNOversal.DryIoc
             return _currentScope;
         }
 
-        private class DryIocScopedProvider : IScopedProvider
+        private partial class DryIocScopedProvider : IScopedProvider
         {
             public DryIocScopedProvider(IResolverContext resolver)
             {

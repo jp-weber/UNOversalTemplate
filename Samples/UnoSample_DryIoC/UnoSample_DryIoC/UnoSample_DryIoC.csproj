@@ -28,7 +28,14 @@
       Mvvm;
       ThemeService;
     </UnoFeatures>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">29.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">
+      <RunAOTCompilation>true</RunAOTCompilation>
+    </PropertyGroup>
+
   <Import Project="..\..\..\UNOversalTemplate.Services\UNOversalTemplate.Services.projitems" Label="Shared" />
   <Import Project="..\..\..\UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems" Label="Shared" />
   <Import Project="..\..\..\UNOversalTemplate.Core\UNOversalTemplate.Core.projitems" Label="Shared" />
