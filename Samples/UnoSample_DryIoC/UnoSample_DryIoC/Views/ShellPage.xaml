@@ -11,43 +11,54 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <NavigationView x:Name="ShellView">
+        <NavigationView
+            x:Name="ShellView"
+            CompactModeThresholdWidth="540"
+            IsSettingsVisible="{x:Bind ViewModel.NavigationIsAllowed,Mode=OneWay}"
+            IsPaneOpen="False">
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     Tag="/MainPage"
                     Icon="Permissions" />
             </NavigationView.MenuItems>
         </NavigationView>
-        <utu:TabBar 
+
+        <Grid 
+            Grid.Row="1"
+            Visibility="{x:Bind ViewModel.IsMobile, Mode=OneWay}">
+            <utu:TabBar 
             x:Name="MobileTabBar"
-            Grid.Row="1">
-            <utu:TabBar.Items>
-                <utu:TabBarItem 
+            utu:SafeArea.Insets="Bottom"
+            utu:SafeArea.Mode="Margin">
+                <utu:TabBar.Items>
+                    <utu:TabBarItem 
                     x:Uid="ShellPageAccountsNavigation"
                     Tag="/AccountCodePage">
-                    <utu:TabBarItem.Icon>
-                        <FontIcon Glyph="&#xE192;" />
-                    </utu:TabBarItem.Icon>
-                </utu:TabBarItem>
-                <utu:TabBarItem 
+                        <utu:TabBarItem.Icon>
+                            <FontIcon Glyph="&#xE192;" />
+                        </utu:TabBarItem.Icon>
+                    </utu:TabBarItem>
+                    <utu:TabBarItem 
                     x:Uid="ShellPageSearchNavigation"
                     Tag="SearchPage">
-                    <utu:TabBarItem.Icon>
-                        <FontIcon Glyph="&#xe721;" />
-                    </utu:TabBarItem.Icon>
-                </utu:TabBarItem>
+                        <utu:TabBarItem.Icon>
+                            <FontIcon Glyph="&#xe721;" />
+                        </utu:TabBarItem.Icon>
+                    </utu:TabBarItem>
 
-                <utu:TabBarItem 
+                    <utu:TabBarItem 
                     x:Uid="ShellPageSettingsNavigation"
                     Tag="SettingPage">
-                    <utu:TabBarItem.Icon>
-                        <FontIcon Glyph="&#xE713;" />
-                    </utu:TabBarItem.Icon>
-                </utu:TabBarItem>
-            </utu:TabBar.Items>
-        </utu:TabBar>
+                        <utu:TabBarItem.Icon>
+                            <FontIcon Glyph="&#xE713;" />
+                        </utu:TabBarItem.Icon>
+                    </utu:TabBarItem>
+                </utu:TabBar.Items>
+            </utu:TabBar>
+        </Grid>
+
     </Grid>
 </Page>

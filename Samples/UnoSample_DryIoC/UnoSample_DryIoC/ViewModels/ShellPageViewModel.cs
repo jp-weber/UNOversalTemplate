@@ -102,12 +102,6 @@ namespace UNO_Sample.ViewModels
 #endif
                 }
             }
-            public bool TabBarIsVisible
-            {
-                get => IsMobile & _tabBarIsVisible;
-                set => SetProperty(ref _tabBarIsVisible, value);
-            }
-
 
             //public int SelectedIndex
             //{

@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoSample_DryIoC", "Samples
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPNetSample_DryIoC", "Samples\UWP_Sample\UWPNetSample_DryIoC.csproj", "{F64EDBFF-0719-4CE2-400C-F587693301D9}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UNOversalTemplate.IoC.MS", "UNOversalTemplate.IoC.MS\UNOversalTemplate.IoC.MS.shproj", "{4657CF73-768A-4F51-A07B-C4ADDA781E0D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,7 +99,6 @@ Global
 		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{1e1f201d-58de-ac8a-2679-052399f4e204}*SharedItemsImports = 5
 		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{1e1f201d-58de-ac8a-2679-052399f4e204}*SharedItemsImports = 5
 		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{1e1f201d-58de-ac8a-2679-052399f4e204}*SharedItemsImports = 5
-		UNOversalTemplate.IoC.MS\UNOversalTemplate.IoC.MS.projitems*{4657cf73-768a-4f51-a07b-c4adda781e0d}*SharedItemsImports = 13
 		UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems*{498ae0ad-1bd1-4139-adff-8dc51f73643e}*SharedItemsImports = 13
 		UNOversalTemplate.Services\UNOversalTemplate.Services.projitems*{879bb3b5-f4a4-4f81-85c8-aa2328ba1454}*SharedItemsImports = 13
 		UNOversalTemplate.Core\UNOversalTemplate.Core.projitems*{d1825e4f-d418-4d2f-9456-66badc726d1a}*SharedItemsImports = 13
