@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 
@@ -30,7 +31,7 @@ namespace UNOversal.Mvvm
         /// <summary>
         /// The default view model factory which provides the ViewModel type as a parameter.
         /// </summary>
-        static Func<Type, object> _defaultViewModelFactory = type => Activator.CreateInstance(type);
+        static Func<Type, object> _defaultViewModelFactory = CreateViewModelInstance;
 
         /// <summary>
         /// ViewModelFactory that provides the View instance and ViewModel type as parameters.
@@ -39,17 +40,28 @@ namespace UNOversal.Mvvm
 
         /// <summary>
         /// Default view type to view model type resolver, assumes the view model is in same assembly as the view type, but in the "ViewModels" namespace.
+        /// Convention-based resolution uses assembly-qualified type names which cannot be statically analyzed by the trimmer.
+        /// Register view models explicitly via <see cref="Register{T,VM}"/> or <see cref="Register{T}(Func{object})"/> to avoid trimming issues.
         /// </summary>
-        static Func<Type, Type> _defaultViewTypeToViewModelTypeResolver =
+        [UnconditionalSuppressMessage("Trimming", "IL2057:Type.GetType",
+            Justification = "Convention-based VM resolver uses assembly-qualified names. Register VMs explicitly for AOT/trimming safety.")]
+        static Func<Type, Type?> _defaultViewTypeToViewModelTypeResolver =
             viewType =>
             {
                 var viewName = viewType.FullName;
-                viewName = viewName.Replace(".Views.", ".ViewModels.");
+                viewName = viewName!.Replace(".Views.", ".ViewModels.");
                 var viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
                 var suffix = viewName.EndsWith("View") ? "Model" : "ViewModel";
                 var viewModelName = String.Format(CultureInfo.InvariantCulture, "{0}{1}, {2}", viewName, suffix, viewAssemblyName);
                 return Type.GetType(viewModelName);
             };
+
+        /// <summary>
+        /// Default factory implementation with trimming annotation so the parameterless constructor is preserved.
+        /// </summary>
+        private static object CreateViewModelInstance(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type type)
+            => Activator.CreateInstance(type)!;
 
         /// <summary>
         /// Sets the default view model factory.
@@ -162,10 +174,12 @@ namespace UNOversal.Mvvm
 
         /// <summary>
         /// Registers a ViewModel type for the specified view type.
+        /// Prefer this over convention-based resolution when targeting trimmed or AOT-compiled builds.
         /// </summary>
         /// <typeparam name="T">The View</typeparam>
         /// <typeparam name="VM">The ViewModel</typeparam>
-        public static void Register<T, VM>()
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor, typeof(object))] // kept generic; concrete types preserved via typeof(VM)
+        public static void Register<T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] VM>()
         {
             var viewType = typeof(T);
             var viewModelType = typeof(VM);
