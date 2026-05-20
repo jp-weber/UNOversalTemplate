@@ -6,6 +6,9 @@ using UNOversal;
 using UNOversal.Services.Gesture;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+using WinRT;
+#endif
 
 namespace UNOversal.Services.WindowService
 {
@@ -25,6 +28,9 @@ namespace UNOversal.Services.WindowService
             }
         }
 
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicWindowsRuntimeCast(typeof(Window))]
+#endif
         private static void Window_Closed(object sender, CoreWindowEventArgs e)
         {
             UnRegister(sender as Windows.UI.Xaml.Window);

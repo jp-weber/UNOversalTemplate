@@ -8,7 +8,7 @@ namespace UNOversal.Services.Dialogs
     /// <remarks>
     /// This class can be used to to pass object parameters during the showing and closing of Dialogs.
     /// </remarks>
-    public class DialogParameters : ParametersBase, IDialogParameters
+    public partial class DialogParameters : ParametersBase, IDialogParameters
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DialogParameters"/> class.
