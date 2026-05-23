@@ -43,8 +43,10 @@ namespace UNOversal.Mvvm
         /// Convention-based resolution uses assembly-qualified type names which cannot be statically analyzed by the trimmer.
         /// Register view models explicitly via <see cref="Register{T,VM}"/> or <see cref="Register{T}(Func{object})"/> to avoid trimming issues.
         /// </summary>
+#if NET10_0_OR_GREATER
         [UnconditionalSuppressMessage("Trimming", "IL2057:Type.GetType",
             Justification = "Convention-based VM resolver uses assembly-qualified names. Register VMs explicitly for AOT/trimming safety.")]
+#endif
         static Func<Type, Type?> _defaultViewTypeToViewModelTypeResolver =
             viewType =>
             {
@@ -60,7 +62,10 @@ namespace UNOversal.Mvvm
         /// Default factory implementation with trimming annotation so the parameterless constructor is preserved.
         /// </summary>
         private static object CreateViewModelInstance(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type type)
+#if NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] 
+#endif
+        Type type)
             => Activator.CreateInstance(type)!;
 
         /// <summary>
@@ -178,8 +183,14 @@ namespace UNOversal.Mvvm
         /// </summary>
         /// <typeparam name="T">The View</typeparam>
         /// <typeparam name="VM">The ViewModel</typeparam>
+#if NET10_0_OR_GREATER
         [DynamicDependency(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor, typeof(object))] // kept generic; concrete types preserved via typeof(VM)
-        public static void Register<T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] VM>()
+#endif
+        public static void Register<T,
+#if NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] 
+#endif
+            VM>()
         {
             var viewType = typeof(T);
             var viewModelType = typeof(VM);
