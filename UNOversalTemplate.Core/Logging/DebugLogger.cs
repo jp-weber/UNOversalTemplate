@@ -3,12 +3,14 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UNOversal.Logging
 {
     /// <summary>
     /// Implementation of <see cref="ILoggerFacade"/> that logs into a message into the Debug.Listeners collection.
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicMethods)]
     public class DebugLogger : ILoggerFacade
     {
         /// <summary>

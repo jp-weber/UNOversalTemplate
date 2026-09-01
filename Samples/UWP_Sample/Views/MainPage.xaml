@@ -9,6 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <TextBlock HorizontalAlignment="Center" FontSize="24">Hello UNOversalTemplate</TextBlock>
     </Grid>
 </Page>

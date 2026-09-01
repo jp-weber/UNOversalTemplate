@@ -9,5 +9,8 @@
     <Import_RootNamespace>UNOversalTemplate.IoC.MS</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)MSIocContainerExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UNOversalApplication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UNOversalIocExtensions.cs" />
   </ItemGroup>
 </Project>

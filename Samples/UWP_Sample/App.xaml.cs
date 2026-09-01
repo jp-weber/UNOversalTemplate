@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using UNOversal;
-using UNOversal.DryIoc;
 using UNOversal.Ioc;
 using UWP_Sample.ViewModels;
 using UWP_Sample.Views;
@@ -16,7 +15,7 @@ namespace UWP_Sample
         /// <summary>
         /// Creates the access of the static instance of the ShellPage
         /// </summary>
-        public static ShellPage ShellPageInstance { get; private set; } = new ShellPage();
+        public static ShellPage ShellPageInstance { get; private set; }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -31,24 +30,23 @@ namespace UWP_Sample
             if (Window.Current.Content == null)
             {
                 Window.Current.Content = ShellPageInstance;
+                await ShellPageInstance.NavigationService.NavigateAsync(nameof(MainPage));
                 Window.Current.Activate();
             }
         }
 
         protected override UIElement CreateShell()
         {
-            ShellPageInstance = Container.Resolve<ShellPage>();
+            ShellPageInstance = new ShellPage();
             return ShellPageInstance;
         }
 
         public override void RegisterTypes(IContainerRegistry container)
         {
-            // standard template 10 services
-            //container.RegisterTemplate10Services();
             // custom services
 
             // pages and view-models
-            container.RegisterSingleton<ShellPage, ShellPage>();
+            //container.RegisterSingleton<ShellPage, ShellPage>();
             container.RegisterForNavigation<MainPage, MainPageViewModel>();
 
             //contentdialogs and view-models

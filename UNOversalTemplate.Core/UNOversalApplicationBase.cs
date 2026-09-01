@@ -8,6 +8,8 @@ using Windows.ApplicationModel.Activation;
 using UNOversal.Ioc;
 using UNOversal.Mvvm;
 using UNOversal.Events;
+using WinRT;
+
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml;
@@ -74,14 +76,20 @@ namespace UNOversal
             Debug.WriteLine("[App.RegisterTypes()]");
             _containerExtension = ContainerLocator.Current;
             //_moduleCatalog = CreateModuleCatalog();
+
+            // Register core services BEFORE user RegisterTypes() to ensure they're available
+            if (_containerExtension is IContainerRegistry registry)
+            {
+                registry.RegisterSingleton<ILoggerFacade>(() => new DebugLogger());
+                registry.RegisterSingleton<IEventAggregator>(() => new EventAggregator());
+            }
+
             RegisterRequiredTypes(_containerExtension);
             RegisterTypes(_containerExtension);
 
-            if (_containerExtension is IContainerRegistry registry)
+            if (_containerExtension is IContainerRegistry registry2)
             {
-                registry.RegisterSingleton<ILoggerFacade, DebugLogger>();
-                registry.RegisterSingleton<IEventAggregator, EventAggregator>();
-                RegisterInternalTypes(registry);
+                RegisterInternalTypes(registry2);
             }
             Debug.WriteLine("Dependency container has just been finalized.");
             _containerExtension.FinalizeExtension();
@@ -162,6 +170,9 @@ namespace UNOversal
             //}
         }
 
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicWindowsRuntimeCast(typeof(FrameworkElement))]
+#endif
         private void CallOnInitializedOnlyOnce()
         {
             // don't forget there is no logger yet

@@ -135,8 +135,11 @@ namespace UNOversal.Ioc
                 name = viewType.Name;
 
             ViewModelLocationProvider.Register(viewType.ToString(), typeof(TViewModel));
-            containerRegistry.RegisterForNavigation(viewType, name);
             PageNavigationRegistry.Register(viewType.Name, (viewType, typeof(TViewModel)));
+
+            // Register the ViewModel in the DI container so it can be resolved later by ResolveViewModelForView.
+            containerRegistry.Register(typeof(TViewModel));
+            containerRegistry.RegisterForNavigation(viewType, name);
         }
     }
 }

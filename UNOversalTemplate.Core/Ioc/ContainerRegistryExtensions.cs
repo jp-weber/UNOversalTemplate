@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UNOversal.Ioc
 {
@@ -50,7 +51,10 @@ namespace UNOversal.Ioc
         /// <typeparam name="TTo">The implementation <see cref="Type" /></typeparam>
         /// <param name="containerRegistry">The instance of the <see cref="IContainerRegistry" /></param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
-        public static IContainerRegistry RegisterSingleton<TFrom, TTo>(this IContainerRegistry containerRegistry) where TTo : TFrom
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors, typeof(object))]
+#endif
+        public static IContainerRegistry RegisterSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFrom, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTo>(this IContainerRegistry containerRegistry) where TTo : TFrom
         {
             return containerRegistry.RegisterSingleton(typeof(TFrom), typeof(TTo));
         }
@@ -63,7 +67,10 @@ namespace UNOversal.Ioc
         /// <param name="containerRegistry">The instance of the <see cref="IContainerRegistry" /></param>
         /// <param name="name">The name or key to register the service</param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
-        public static IContainerRegistry RegisterSingleton<TFrom, TTo>(this IContainerRegistry containerRegistry, string name) where TTo : TFrom
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors, typeof(object))]
+#endif
+        public static IContainerRegistry RegisterSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFrom, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTo>(this IContainerRegistry containerRegistry, string name) where TTo : TFrom
         {
             return containerRegistry.RegisterSingleton(typeof(TFrom), typeof(TTo), name);
         }
@@ -169,7 +176,18 @@ namespace UNOversal.Ioc
         /// <typeparam name="TTo">The implementation <see cref="Type" /></typeparam>
         /// <param name="containerRegistry">The instance of the <see cref="IContainerRegistry" /></param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
-        public static IContainerRegistry Register<TFrom, TTo>(this IContainerRegistry containerRegistry) where TTo : TFrom
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors, typeof(object))]
+#endif
+        public static IContainerRegistry Register<
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TFrom,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TTo>(this IContainerRegistry containerRegistry) where TTo : TFrom
         {
             return containerRegistry.Register(typeof(TFrom), typeof(TTo));
         }
@@ -182,7 +200,18 @@ namespace UNOversal.Ioc
         /// <param name="containerRegistry">The instance of the <see cref="IContainerRegistry" /></param>
         /// <param name="name">The name or key to register the service</param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
-        public static IContainerRegistry Register<TFrom, TTo>(this IContainerRegistry containerRegistry, string name) where TTo : TFrom
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors, typeof(object))]
+#endif
+        public static IContainerRegistry Register<
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TFrom,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TTo>(this IContainerRegistry containerRegistry, string name) where TTo : TFrom
         {
             return containerRegistry.Register(typeof(TFrom), typeof(TTo), name);
         }

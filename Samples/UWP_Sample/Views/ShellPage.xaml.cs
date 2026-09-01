@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UNOversal.Navigation;
+using UNOversal.Services.Gesture;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -13,8 +15,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace UWP_Sample.Views
 {
     /// <summary>
@@ -22,9 +22,13 @@ namespace UWP_Sample.Views
     /// </summary>
     public sealed partial class ShellPage : Page
     {
+        public INavigationService NavigationService { get; internal set; }
         public ShellPage()
         {
             this.InitializeComponent();
+
+            GestureService.SetupWindowListeners(Window.Current.CoreWindow);
+            NavigationService = NavigationFactory.Create(MainFrame).AttachGestures(Window.Current, Gesture.Back, Gesture.Forward);
         }
     }
 }

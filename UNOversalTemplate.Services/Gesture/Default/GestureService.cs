@@ -49,11 +49,6 @@ namespace UNOversal.Services.Gesture
             }
         }
 
-        public GestureService()
-        {
-
-        }
-
         private GestureService(CoreWindow window)
         {
             window.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;

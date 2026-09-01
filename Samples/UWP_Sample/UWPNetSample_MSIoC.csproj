@@ -11,10 +11,18 @@
     <PublishAot>true</PublishAot>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
-    <EnableMsixTooling>true</EnableMsixTooling>
+	<EnableMsixTooling>true</EnableMsixTooling>
 	<CsWinRTAotWarningLevel>3</CsWinRTAotWarningLevel>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+	<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+	<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+	<PackageCertificateThumbprint>35D754E8113EFF01266CE1A79DD7837E1C6F399F</PackageCertificateThumbprint>
+	<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+	<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+	<GenerateTestArtifacts>False</GenerateTestArtifacts>
+	<AppxBundle>Never</AppxBundle>
+	<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
@@ -49,14 +57,30 @@
 		<PRIResource Remove="BundleArtifacts\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-	  <PackageReference Include="CommunityToolkit.UWP.Helpers" Version="8.2.250402" />
-	  <PackageReference Include="DryIoc.dll" Version="5.4.3" />
-	  <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
-	  <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.3.0-prerelease.251015.2" />
+		<None Remove="Properties\Default.rd.xml" />
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+		<PRIResource Remove="AppPackages\**" />
+		<PRIResource Remove="BundleArtifacts\**" />
+		<!-- Trimmer root descriptor for AOT compatibility -->
+		<!--<TrimmerRootDescriptor Include="TrimmerRootDescriptor.xml" />-->
 	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+	  <PackageReference Include="CommunityToolkit.UWP.Helpers" Version="8.2.251219" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+	  <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
+	  <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.3.1" />
+	</ItemGroup>
+
+	<!-- Add Source Generator AdditionalFiles (compiled inline, no project reference required) -->
+
+	<!-- Configure Analyzer path for Source Generator -->
+	<ItemGroup>
+		<Analyzer Include="..\..\ViewModelGenerator\bin\Debug\netstandard2.0\*.dll" Condition="Exists('..\..\ViewModelGenerator\bin\Debug\netstandard2.0\*.dll')" />
+	</ItemGroup>
+
 	<Import Project="..\..\UNOversalTemplate.Services\UNOversalTemplate.Services.projitems" Label="Shared" />
-	<Import Project="..\..\UNOversalTemplate.IoC.DryIoC\UNOversalTemplate.IoC.DryIoC.projitems" Label="Shared" />
 	<Import Project="..\..\UNOversalTemplate.Core\UNOversalTemplate.Core.projitems" Label="Shared" />
+	<Import Project="..\..\UNOversalTemplate.IoC.MS\UNOversalTemplate.IoC.MS.projitems" Label="Shared" />
 </Project>

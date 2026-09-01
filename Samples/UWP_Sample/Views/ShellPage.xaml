@@ -9,6 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <Frame x:Name="MainFrame"></Frame>
     </Grid>
 </Page>

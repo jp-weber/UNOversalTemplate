@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.Storage;
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+using WinRT;
+#endif
 
 namespace UNOversal.Services.File
 {
@@ -304,6 +307,9 @@ namespace UNOversal.Services.File
         /// <param name="location">Location storage strategy</param>
         /// <param name="path">Custom path for storage (only accessible if rights have been granted)</param>
         /// <returns>StorageFile</returns>
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicWindowsRuntimeCast(typeof(StorageFile))]
+#endif
         private async Task<StorageFile> GetIfFileExistsAsync(string key,
             StorageStrategies location = StorageStrategies.Local, string path = null)
         {

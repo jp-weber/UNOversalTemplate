@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UNOversal.Events
 {
     /// <summary>
     /// Implements <see cref="IEventAggregator"/>.
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicMethods)]
     public partial class EventAggregator : IEventAggregator
     {
         private readonly Dictionary<Type, EventBase> events = new Dictionary<Type, EventBase>();

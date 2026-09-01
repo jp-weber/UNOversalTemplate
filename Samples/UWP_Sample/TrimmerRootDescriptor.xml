@@ -1,0 +1,46 @@
+<linker>
+  <!-- Preserve all types that must be available at runtime for reflection-based dependency injection -->
+
+  <!-- UNOversal Logging - Required for ILoggerFacade resolution -->
+  <assembly fullname="UNOversal.Logging">
+	<type fullname="UNOversal.Logging.ILoggerFacade" preserve="all" />
+	<type fullname="UNOversal.Logging.DebugLogger" preserve="all" />
+	<type fullname="UNOversal.Logging.EmptyLogger" preserve="all" />
+	<type fullname="UNOversal.Logging.Category" preserve="all" />
+	<type fullname="UNOversal.Logging.Priority" preserve="all" />
+  </assembly>
+
+  <!-- UNOversal Events - Required for IEventAggregator resolution -->
+  <assembly fullname="UNOversal.Events">
+	<type fullname="UNOversal.Events.IEventAggregator" preserve="all" />
+	<type fullname="UNOversal.Events.EventAggregator" preserve="all" />
+	<type fullname="UNOversal.Events.PubSubEvent" preserve="all" />
+	<type fullname="UNOversal.Events.EventSubscription" preserve="all" />
+	<type fullname="UNOversal.Events.BackgroundEventSubscription" preserve="all" />
+	<type fullname="UNOversal.Events.DispatcherEventSubscription" preserve="all" />
+  </assembly>
+
+  <!-- UNOversal.Core IoC - Required for container operations and generic type registration -->
+  <assembly fullname="UNOversal">
+	<namespace fullname="UNOversal.Ioc" preserve="all" />
+	<namespace fullname="UNOversal.Mvvm" preserve="all" />
+	<type fullname="UNOversal.UNOversalApplicationBase" preserve="all" />
+  </assembly>
+
+  <!-- Microsoft.Extensions.DependencyInjection - Required for reflection-based service activation -->
+  <assembly fullname="Microsoft.Extensions.DependencyInjection.Abstractions" preserve="all" />
+  <assembly fullname="Microsoft.Extensions.DependencyInjection">
+	<!-- Preserve all of MS.DI as it uses reflection for activation -->
+	<namespace fullname="Microsoft.Extensions.DependencyInjection" preserve="all" />
+  </assembly>
+
+  <!-- All ViewModels - Required for dynamic creation and binding -->
+  <assembly fullname="UWPNetSample_MSIoC">
+	<namespace fullname="UWPNetSample_MSIoC.ViewModels" preserve="all" />
+  </assembly>
+
+  <!-- Windows/UI assemblies that might interact with reflection -->
+  <assembly fullname="Windows.UI.Xaml" preserve="all" />
+  <assembly fullname="Microsoft.UI.Xaml" preserve="all" />
+</linker>
+
