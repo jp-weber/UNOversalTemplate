@@ -58,6 +58,7 @@ namespace UNOversal.Ioc
         /// </summary>
         public void FinalizeExtension()
         {
+            _serviceCollection.AddSingleton<IContainerProvider>(this);
             _provider = _serviceCollection.BuildServiceProvider();
             Instance = _provider;
         }
