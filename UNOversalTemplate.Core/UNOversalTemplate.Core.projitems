@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extension\TaskExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extension\TaskExtensions{T}.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationDataStorageHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerExtensionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Structures\OSVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SystemInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IApplicationArgs.cs" />
@@ -42,7 +43,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerResolutionErrorCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerResolutionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\Abstracts\IContainerExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ioc\ContainerExtensionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\Abstracts\IContainerProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\Abstracts\IContainerProviderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ioc\Abstracts\IContainerRegistry.cs" />

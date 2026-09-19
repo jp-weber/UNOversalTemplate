@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using UNOversal.Logging;
+using UNOversal.Navigation;
 using System.Diagnostics;
 using System.Threading;
 using Windows.ApplicationModel.Core;
@@ -255,7 +256,19 @@ namespace UNOversal
         /// <param name="containerRegistry"></param>
         protected virtual void RegisterRequiredTypes(IContainerRegistry containerRegistry)
         {
-            //containerRegistry.RegisterRequiredTypes(_moduleCatalog);
+            // Register core services with MS.DI that are required by ViewModels.
+            // These weren't auto-registered in the original DryIoc-based version where missing dependencies
+            // would be dynamically created. With MS.DI, any ViewModel depending on INavigationService
+            // will fail if this service is not registered.
+
+            // Register INavigationService with a lazy factory that creates it on first access.
+            // The actual instance will be tied to the Shell page's Frame (the main navigation frame).
+            // Note: NavigationFactory.Create() requires an IApplicationInitializer to determine
+            // the root frame. It automatically detects XamlFrame, Frame, or WindowsUI.Window instances.
+            containerRegistry.RegisterSingleton<INavigationService>(() =>
+            {
+                return UNOversal.Navigation.NavigationFactory.Create();
+            });
         }
 
         /// <summary>
