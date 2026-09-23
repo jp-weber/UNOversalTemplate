@@ -10,7 +10,9 @@ namespace UNOversal.Logging
     /// <summary>
     /// Implementation of <see cref="ILoggerFacade"/> that logs into a message into the Debug.Listeners collection.
     /// </summary>
+#if WINDOWS_UWP && NET10_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicMethods)]
+#endif
     public class DebugLogger : ILoggerFacade
     {
         /// <summary>

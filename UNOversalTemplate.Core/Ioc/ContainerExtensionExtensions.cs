@@ -1,8 +1,9 @@
 using System;
 using UNOversal.Navigation;
 using UNOversal.Mvvm;
+#if WINDOWS_UWP && NET10_0_OR_GREATER
 using WinRT;
-
+#endif
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml.Controls;
@@ -24,20 +25,30 @@ namespace UNOversal.Ioc
         {
             if (view is Page page)
             {
-                if (page.Frame != null)
+                INavigationService? navigationService = null;
+
+                if (page.Frame != null && NavigationService.Instances.ContainsKey(page.Frame))
                 {
-                    INavigationService service = NavigationService.Instances[page.Frame];
-                    return extension.Resolve(viewModelType, (typeof(INavigationService), service));
+                    // Frame is already initialized — use its scoped NavigationService
+                    navigationService = NavigationService.Instances[page.Frame];
                 }
                 else
                 {
-                    return extension.Resolve(viewModelType);
+                    // Try to find any registered NavigationService as fallback (e.g., during startup)
+                    var serviceProvider = extension as IContainerExtension<IServiceProvider>;
+                    if (serviceProvider?.Instance != null)
+                    {
+                        navigationService = serviceProvider.Instance.GetService(typeof(INavigationService)) as INavigationService;
+                    }
+                }
+
+                if (navigationService != null)
+                {
+                    return extension.Resolve(viewModelType, (typeof(INavigationService), navigationService));
                 }
             }
-            else
-            {
-                return extension.Resolve(viewModelType);
-            }
+
+            return extension.Resolve(viewModelType);
         }
 
         /// <summary>
@@ -123,12 +134,11 @@ namespace UNOversal.Ioc
 
             ViewModelLocationProvider.Register(viewType.ToString(), typeof(TViewModel));
 
-            // Register the ViewModel type with DI so constructor injection works correctly.
-            // This is essential when ViewModels have dependencies (e.g., INavigationService, IEventAggregator).
-            // Without this, Resolve() falls back to Activator.CreateInstance which fails 
-            // if there's no parameterless constructor.
-            containerRegistry.Register(typeof(TViewModel), typeof(TViewModel));
-
+            // Do NOT register ViewModel in DI - it would try to resolve constructor dependencies
+            // like INavigationService which is frame-specific. ViewModels are created via 
+            // Activator.CreateInstance by ViewModelLocator, then NavigationService is set via 
+            // property injection (ViewModelBase.NavigationService = _navigationService).
+            
             containerRegistry.RegisterForNavigation(viewType, name);
         }
     }

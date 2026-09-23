@@ -279,18 +279,81 @@ namespace UNOversal.Ioc
         {
             try
             {
-                // Optimize: Cache the ServiceProvider. Rebuilding it on every single resolve is an expensive reflection operation that freezes the UI during startup/navigation.
                 var serviceProvider = _provider ??= _serviceCollection.BuildServiceProvider();
 
-                IServiceProvider provider = _currentScope is ScopedProvider scope 
-                    ? scope.ServiceProvider 
+                // Always resolve from the root ServiceProvider, not a scope.
+                // Creating multiple scopes on every call is expensive and may not have all services registered.
+                IServiceProvider innerProvider = _currentScope is ScopedProvider scope
+                    ? scope.ServiceProvider
                     : serviceProvider;
 
-                using var scope1 = provider.CreateScope();
+                // Use ActivatorUtilities to create type with explicit ctor params + DI resolution for remaining deps.
+                // This matches DryIoc's ConstructorWithResolvableArguments behavior.
+                if (parameters != null && parameters.Length > 0)
+                {
+                    try
+                    {
+                        // Find best constructor and resolve all its arguments: first from explicit params, rest from DI.
+                        var ctors = type.GetConstructors(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                        var bestCtor = ctors.OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
 
-                // Attempt to resolve from container first, fallback to Activator.CreateInstance if not registered
-                var instance = scope1.ServiceProvider.GetService(type);
-                return instance ?? Activator.CreateInstance(type)!;
+                        if (bestCtor != null)
+                        {
+                            var ctorParams = bestCtor.GetParameters();
+                            var resolvedArgs = new object[ctorParams.Length];
+                            bool canResolve = true;
+
+                            for (int i = 0; i < ctorParams.Length; i++)
+                            {
+                                var pType = ctorParams[i].ParameterType;
+
+                                // Try to match from explicit params by type first
+                                bool foundExplicit = false;
+                                foreach (var ep in parameters)
+                                    if (ep.Type == pType)
+                                    {
+                                        resolvedArgs[i] = ep.Instance;
+                                        foundExplicit = true;
+                                        break;
+                                    }
+
+                                if (!foundExplicit)
+                                {
+                                    // Resolve remaining args from DI
+                                    var service = innerProvider.GetService(pType);
+                                    if (service != null)
+                                    {
+                                        resolvedArgs[i] = service;
+                                    }
+                                    else if (pType.IsValueType || ctorParams[i].ParameterType.IsClass == false)
+                                    {
+                                        canResolve = false;
+                                    }
+                                }
+                            }
+
+                            if (canResolve && resolvedArgs.All(a => a != null))
+                            {
+                                return bestCtor.Invoke(resolvedArgs);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // Some deps weren't available — fall through to fallback
+                    }
+                }
+
+                // Fallback: attempt DI resolution, then manually resolve ctor args + Activator.CreateInstance
+                var instance = innerProvider.GetService(type);
+                if (instance != null) return instance;
+
+                // Try to resolve constructor parameters from DI and invoke directly
+                TryResolveWithCtorDeps(innerProvider, type, out var manualResult);
+                if (manualResult != null) return manualResult;
+
+                // Last resort: no-arg creation
+                return Activator.CreateInstance(type)!;
             }
             catch (Exception ex) when (!(ex is ArgumentNullException))
             {
@@ -299,7 +362,59 @@ namespace UNOversal.Ioc
         }
 
         /// <summary>
-        /// Resolves a given <see cref="Type"/>
+        /// Attempts to resolve a type by manually resolving all constructor parameters from DI.
+        /// </summary>
+        private static bool TryResolveWithCtorDeps(IServiceProvider provider, Type type, out object result)
+        {
+            var ctors = type.GetConstructors(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            var bestCtor = ctors.OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
+
+            if (bestCtor == null)
+            {
+                result = null;
+                return false;
+            }
+
+            var ctorParams = bestCtor.GetParameters();
+            var resolvedArgs = new object[ctorParams.Length];
+            bool canResolve = true;
+
+            for (int i = 0; i < ctorParams.Length; i++)
+            {
+                var pType = ctorParams[i].ParameterType;
+                var service = provider.GetService(pType);
+
+                if (service != null)
+                {
+                    resolvedArgs[i] = service;
+                }
+                else if (pType.IsValueType || ctorParams[i].ParameterType.IsClass == false)
+                {
+                    canResolve = false;
+                }
+            }
+
+            if (canResolve && resolvedArgs.All(a => a != null))
+            {
+                try
+                {
+                    result = bestCtor.Invoke(resolvedArgs);
+                    return true;
+                }
+                catch
+                {
+                    result = null;
+                    return false;
+                }
+            }
+
+            result = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Resolves a given service by registered name/key.
+        /// </summary>
         /// </summary>
         /// <param name="type">The service <see cref="Type"/></param>
         /// <param name="name">The service name/key used when registering the <see cref="Type"/></param>
@@ -309,16 +424,25 @@ namespace UNOversal.Ioc
         {
             try
             {
-                IServiceProvider provider = _currentScope is ScopedProvider scope 
-                    ? scope.ServiceProvider 
+                IServiceProvider provider = _currentScope is ScopedProvider scope
+                    ? scope.ServiceProvider
                     : (_provider ??= _serviceCollection.BuildServiceProvider());
 
                 using var scope1 = provider.CreateScope();
+                var innerProvider = scope1.ServiceProvider;
 
                 if (!string.IsNullOrEmpty(name))
-                    return scope1.ServiceProvider.GetRequiredService(type) ?? Activator.CreateInstance(type)!;
+                {
+                    var instance = innerProvider.GetService(type);
+                    if (instance != null) return instance;
 
-                return scope1.ServiceProvider.GetRequiredService(type);
+                    if (TryResolveWithCtorDeps(innerProvider, type, out var result))
+                        return result;
+
+                    return Activator.CreateInstance(type)!;
+                }
+
+                return provider.GetRequiredService(type);
             }
             catch (Exception ex) when (!(ex is ArgumentNullException))
             {
@@ -349,8 +473,8 @@ namespace UNOversal.Ioc
 
         Type IContainerInfo.GetRegistrationType(string key)
         {
-            var registration = _serviceCollection.FirstOrDefault(r => 
-                (r.ImplementationType?.Name == key) || 
+            var registration = _serviceCollection.FirstOrDefault(r =>
+                (r.ImplementationType?.Name == key) ||
                 (r.ServiceType.Name == key));
             return registration?.ImplementationType ?? typeof(void);
         }
@@ -411,6 +535,44 @@ namespace UNOversal.Ioc
 
             public object Resolve(Type type, params (Type Type, object Instance)[] parameters)
             {
+                if (parameters != null && parameters.Length > 0)
+                {
+                    var resolvedArgs = new object[type.GetConstructors(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Max(c => c.GetParameters().Length)];
+                    var ctors = type.GetConstructors(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                    var bestCtor = ctors.OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
+
+                    if (bestCtor != null)
+                    {
+                        var ctorParams = bestCtor.GetParameters();
+                        resolvedArgs = new object[ctorParams.Length];
+                        bool canResolve = true;
+
+                        for (int i = 0; i < ctorParams.Length; i++)
+                        {
+                            var pType = ctorParams[i].ParameterType;
+                            foreach (var ep in parameters)
+                                if (ep.Type == pType)
+                                {
+                                    resolvedArgs[i] = ep.Instance;
+                                    break;
+                                }
+
+                            if (resolvedArgs[i] == null)
+                            {
+                                var service = BaseServiceProvider.GetService(pType);
+                                if (service != null) resolvedArgs[i] = service;
+                                else if (pType.IsValueType || ctorParams[i].ParameterType.IsClass == false) canResolve = false;
+                            }
+                        }
+
+                        if (canResolve && resolvedArgs.All(a => a != null))
+                        {
+                            try { return bestCtor.Invoke(resolvedArgs); }
+                            catch { }
+                        }
+                    }
+                }
+
                 return GetRequiredService(type);
             }
 

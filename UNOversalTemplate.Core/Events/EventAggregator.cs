@@ -8,7 +8,9 @@ namespace UNOversal.Events
     /// <summary>
     /// Implements <see cref="IEventAggregator"/>.
     /// </summary>
+#if WINDOWS_UWP && NET10_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicMethods)]
+#endif
     public partial class EventAggregator : IEventAggregator
     {
         private readonly Dictionary<Type, EventBase> events = new Dictionary<Type, EventBase>();

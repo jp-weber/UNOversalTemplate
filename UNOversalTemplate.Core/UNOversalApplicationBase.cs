@@ -9,8 +9,9 @@ using Windows.ApplicationModel.Activation;
 using UNOversal.Ioc;
 using UNOversal.Mvvm;
 using UNOversal.Events;
+#if WINDOWS_UWP && NET10_0_OR_GREATER
 using WinRT;
-
+#endif
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml;
@@ -258,17 +259,19 @@ namespace UNOversal
         {
             // Register core services with MS.DI that are required by ViewModels.
             // These weren't auto-registered in the original DryIoc-based version where missing dependencies
-            // would be dynamically created. With MS.DI, any ViewModel depending on INavigationService
-            // will fail if this service is not registered.
-
-            // Register INavigationService with a lazy factory that creates it on first access.
-            // The actual instance will be tied to the Shell page's Frame (the main navigation frame).
-            // Note: NavigationFactory.Create() requires an IApplicationInitializer to determine
-            // the root frame. It automatically detects XamlFrame, Frame, or WindowsUI.Window instances.
-            containerRegistry.RegisterSingleton<INavigationService>(() =>
+            // would be dynamically created via ConstructorWithResolvableArguments policy.
+            
+            // Register INavigationService as a global singleton. 
+            // During startup (before Frame is created), this provides the default instance.
+            // When pages are navigated to via ShellFrame, ResolveViewModelForView will use 
+            // NavigationService.Instances[page.Frame] which overrides this for frame-specific navigation.
+            if (!containerRegistry.IsRegistered(typeof(INavigationService)))
             {
-                return UNOversal.Navigation.NavigationFactory.Create();
-            });
+                containerRegistry.RegisterSingleton<INavigationService>(() =>
+                {
+                    return UNOversal.Navigation.NavigationFactory.Create();
+                });
+            }
         }
 
         /// <summary>

@@ -54,7 +54,15 @@ namespace UNOversal.Ioc
 #if WINDOWS_UWP && NET10_0_OR_GREATER
         [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors, typeof(object))]
 #endif
-        public static IContainerRegistry RegisterSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFrom, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTo>(this IContainerRegistry containerRegistry) where TTo : TFrom
+        public static IContainerRegistry RegisterSingleton<
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+        TFrom,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TTo>(this IContainerRegistry containerRegistry) where TTo : TFrom
         {
             return containerRegistry.RegisterSingleton(typeof(TFrom), typeof(TTo));
         }
@@ -70,7 +78,15 @@ namespace UNOversal.Ioc
 #if WINDOWS_UWP && NET10_0_OR_GREATER
         [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors, typeof(object))]
 #endif
-        public static IContainerRegistry RegisterSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFrom, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTo>(this IContainerRegistry containerRegistry, string name) where TTo : TFrom
+        public static IContainerRegistry RegisterSingleton<
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+            TFrom,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+            TTo>(this IContainerRegistry containerRegistry, string name) where TTo : TFrom
         {
             return containerRegistry.RegisterSingleton(typeof(TFrom), typeof(TTo), name);
         }
