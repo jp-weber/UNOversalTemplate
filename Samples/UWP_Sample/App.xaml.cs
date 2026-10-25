@@ -45,9 +45,14 @@ namespace UWP_Sample
         {
             // custom services
 
-            // pages and view-models
-            //container.RegisterSingleton<ShellPage, ShellPage>();
-            container.RegisterForNavigation<MainPage, MainPageViewModel>();
+            // pages and view-models — use AOT-safe RegistrationFornavigationAotSafe<T>() overloads.
+            // These capture the concrete Page type at compile time (via generic closure), 
+            // avoiding Frame.Navigate(sourcePageType: Type) which fails under DisableRuntimeMarshalled=true.
+            container.RegisterForNavigationAotSafe<MainPage, MainPageViewModel>();
+
+            // ShellPage is created directly via constructor and set as Window.Current.Content;
+            // register it with null VM so AutoWireViewModel completes cleanly (no warning) under .NET 10+.
+            container.RegisterForNavigationNoViewModel(typeof(ShellPage));
 
             //contentdialogs and view-models
 

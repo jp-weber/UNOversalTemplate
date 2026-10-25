@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using UNOversal.Ioc.Internals;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System.Collections.Generic;
+using UNOversal.Navigation;
 
 namespace UNOversal.Ioc
 {
@@ -81,7 +83,11 @@ namespace UNOversal.Ioc
         /// <param name="from">The service <see cref="Type" /></param>
         /// <param name="to">The implementation <see cref="Type" /></param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
-        public IContainerRegistry RegisterSingleton(Type from, Type to)
+        public IContainerRegistry RegisterSingleton(Type from,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+        Type to)
         {
             _serviceCollection.AddSingleton(from, to);
             return this;
@@ -94,7 +100,11 @@ namespace UNOversal.Ioc
         /// <param name="to">The implementation <see cref="Type" /></param>
         /// <param name="name">The name or key to register the service</param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
-        public IContainerRegistry RegisterSingleton(Type from, Type to, string name)
+        public IContainerRegistry RegisterSingleton(Type from,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+        Type to, string name)
         {
             _serviceCollection.AddSingleton(from, to);
             return this;
@@ -131,7 +141,14 @@ namespace UNOversal.Ioc
         /// <param name="serviceTypes">The service <see cref="Type"/>'s.</param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
         /// <remarks>Registers all interfaces if none are specified.</remarks>
-        public IContainerRegistry RegisterManySingleton(Type type, params Type[] serviceTypes)
+#if NET10_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
+        public IContainerRegistry RegisterManySingleton(
+#if NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
+            Type type, params Type[] serviceTypes)
         {
             if (serviceTypes.Length == 0)
             {
@@ -238,7 +255,14 @@ namespace UNOversal.Ioc
         /// <param name="serviceTypes">The service <see cref="Type"/>'s.</param>
         /// <returns>The <see cref="IContainerRegistry" /> instance</returns>
         /// <remarks>Registers all interfaces if none are specified.</remarks>
-        public IContainerRegistry RegisterMany(Type type, params Type[] serviceTypes)
+#if NET10_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
+        public IContainerRegistry RegisterMany(
+#if NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
+            Type type, params Type[] serviceTypes)
         {
             if (serviceTypes.Length == 0)
             {
@@ -258,7 +282,14 @@ namespace UNOversal.Ioc
         /// </summary>
         /// <param name="type">The service <see cref="Type"/></param>
         /// <returns>The resolved Service <see cref="Type"/></returns>
-        public object Resolve(Type type) =>
+#if NET10_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        public object Resolve(
+#if NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+            Type type) =>
             Resolve(type, Array.Empty<(Type, object)>());
 
         /// <summary>
@@ -267,7 +298,14 @@ namespace UNOversal.Ioc
         /// <param name="type">The service <see cref="Type"/></param>
         /// <param name="name">The service name/key used when registering the <see cref="Type"/></param>
         /// <returns>The resolved Service <see cref="Type"/></returns>
-        public object Resolve(Type type, string name) =>
+#if NET10_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        public object Resolve(
+#if NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+            Type type, string name) =>
             Resolve(type, name, Array.Empty<(Type, object)>());
 
         /// <summary>
@@ -275,7 +313,12 @@ namespace UNOversal.Ioc
         /// </summary>
         /// <param name="type">The service <see cref="Type"/></param>
         /// <returns>The resolved Service <see cref="Type"/></returns>
-        public object Resolve(Type type, params (Type Type, object Instance)[] parameters)
+        public object Resolve(
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+            Type type, 
+            params (Type Type, object Instance)[] parameters)
         {
             try
             {
@@ -344,9 +387,24 @@ namespace UNOversal.Ioc
                     }
                 }
 
-                // Fallback: attempt DI resolution, then manually resolve ctor args + Activator.CreateInstance
+                // Fallback: attempt DI resolution, then AOT-safe VM activators for unregistered types.
                 var instance = innerProvider.GetService(type);
                 if (instance != null) return instance;
+
+                // For ViewModels registered via RegisterForNavigationAotSafe<TView, TViewModel>,
+                // use the pre-captured VM activator delegate instead of reflection-based fallback.
+                // This avoids WinRT TypeName conversion under DisableRuntimeMarshalled=true.
+                if (type.Name.EndsWith("ViewModel") && PageNavigationRegistry.TryGetVmActivator(type, out var vmActivator))
+                {
+                    try
+                    {
+                        return vmActivator();
+                    }
+                    catch
+                    {
+                        // VM activator failed — fall through to reflection fallback
+                    }
+                }
 
                 // Try to resolve constructor parameters from DI and invoke directly
                 TryResolveWithCtorDeps(innerProvider, type, out var manualResult);
@@ -364,7 +422,11 @@ namespace UNOversal.Ioc
         /// <summary>
         /// Attempts to resolve a type by manually resolving all constructor parameters from DI.
         /// </summary>
-        private static bool TryResolveWithCtorDeps(IServiceProvider provider, Type type, out object result)
+        private static bool TryResolveWithCtorDeps(IServiceProvider provider,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+        Type type, out object result)
         {
             var ctors = type.GetConstructors(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             var bestCtor = ctors.OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
@@ -420,7 +482,14 @@ namespace UNOversal.Ioc
         /// <param name="name">The service name/key used when registering the <see cref="Type"/></param>
         /// <param name="parameters">Typed parameters to use when resolving the Service</param>
         /// <returns>The resolved Service <see cref="Type"/></returns>
-        public object Resolve(Type type, string name, params (Type Type, object Instance)[] parameters)
+#if NET10_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        public object Resolve(
+#if NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+            Type type, string name, params (Type Type, object Instance)[] parameters)
         {
             try
             {
@@ -533,7 +602,11 @@ namespace UNOversal.Ioc
             public object Resolve(Type type, string name) =>
                 GetRequiredService(type);
 
-            public object Resolve(Type type, params (Type Type, object Instance)[] parameters)
+            public object Resolve(
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+            Type type, params (Type Type, object Instance)[] parameters)
             {
                 if (parameters != null && parameters.Length > 0)
                 {

@@ -5,10 +5,22 @@
     xmlns:local="using:UWP_Sample.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Frame x:Name="MainFrame"></Frame>
+        <muxc:NavigationView 
+            x:Name="NavView" 
+            PaneDisplayMode="Left" 
+            IsBackButtonVisible="Collapsed" 
+            IsBackEnabled="False">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Content="Home" Icon="Home" Tag="home"/>
+                <muxc:NavigationViewItem Content="Settings" Icon="Setting" Tag="settings"/>
+            </muxc:NavigationView.MenuItems>
+            <Frame x:Name="MainFrame"></Frame>
+        </muxc:NavigationView>
+        <!--<Frame x:Name="MainFrame"></Frame>-->
     </Grid>
 </Page>

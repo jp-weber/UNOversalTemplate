@@ -9,6 +9,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock HorizontalAlignment="Center" FontSize="24">Hello UNOversalTemplate</TextBlock>
+        <StackPanel HorizontalAlignment="Center" >
+            <TextBlock FontSize="24">Hello UNOversalTemplate</TextBlock>
+            <Button HorizontalAlignment="Center">Navigate to page 2</Button>
+        </StackPanel>
     </Grid>
 </Page>

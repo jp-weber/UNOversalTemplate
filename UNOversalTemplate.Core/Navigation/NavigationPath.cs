@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Linq;
+#if WINDOWS_UWP
+using Windows.UI.Xaml.Controls;
+#else
+using Microsoft.UI.Xaml.Controls;
+#endif
 using Windows.Foundation;
 
 namespace UNOversal.Navigation
@@ -7,6 +12,21 @@ namespace UNOversal.Navigation
     public partial class NavigationPath : INavigationPath
     {
         private readonly string _originalString;
+
+        /// <summary>
+        /// The resolved Page type used by native Frame navigation and retained for history metadata.
+        /// </summary>
+        public Type View { get; }
+
+        /// <summary>
+        /// Associated ViewModel type for auto-wiring.
+        /// </summary>
+        public Type ViewModel { get; }
+
+        /// <summary>
+        /// Activator captured at registration time and used to restore pages from navigation history.
+        /// </summary>
+        public Func<Page> Activator { get; }
 
         public string QueryString { get; }
 
@@ -49,13 +69,14 @@ namespace UNOversal.Navigation
                 }
             }
 
-            // get types
+            // get types from PageNavigationRegistry
 
             if (PageNavigationRegistry.TryGetRegistration(Key, out var info))
             {
                 Key = info.Key;
                 View = info.View;
                 ViewModel = info.ViewModel;
+                Activator = info.Activator;  // Capture AOT-safe activator delegate if available
             }
             else
             {
@@ -68,10 +89,6 @@ namespace UNOversal.Navigation
         public INavigationParameters Parameters { get; } = new NavigationParameters();
 
         public string Key { get; }
-
-        public Type View { get; }
-
-        public Type ViewModel { get; }
 
         public override string ToString()
         {

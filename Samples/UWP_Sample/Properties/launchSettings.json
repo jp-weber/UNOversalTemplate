@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "UWPNetSample_DryIoC": {
+    "UWPNetSample_MSIoC": {
       "commandName": "MsixPackage"
     }
   }

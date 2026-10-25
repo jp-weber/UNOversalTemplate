@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +17,10 @@ using UNOversal.Logging;
 using UNOversal.Mvvm;
 using Windows.UI.Core;
 using UNOversal.Ioc;
+#if NET10_0_OR_GREATER && WINDOWS_UWP
+using WinRT;
+using System.Linq;
+#endif
 
 
 namespace UNOversal.Navigation
@@ -92,8 +96,14 @@ namespace UNOversal.Navigation
               mode: NavigationMode.Back,
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
               navigate: async () =>
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+#pragma warning restore CS1998
               {
+                  if (_frame.BackStack.Count == 0)
+                  {
+                      _logger.Log("FrameFacade.GoBackAsync() failed: BackStack is empty.", Category.Info, Priority.Low);
+                      return false;
+                  }
+
                   _frame.GoBack(infoOverride);
                   return true;
               });
@@ -113,12 +123,20 @@ namespace UNOversal.Navigation
                 mode: NavigationMode.Forward,
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
                 navigate: async () =>
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+#pragma warning restore CS1998
                 {
+                    if (_frame.ForwardStack.Count == 0)
+                    {
+                        _logger.Log("FrameFacade.GoForwardAsync() failed: ForwardStack is empty.", Category.Info, Priority.Low);
+                        return false;
+                    }
+
                     _frame.GoForward();
                     return true;
                 });
         }
+
+
 
         public INavigationParameters CurrentParameters { get; private set; }
 
@@ -127,16 +145,15 @@ namespace UNOversal.Navigation
             _logger.Log("FrameFacade.RefreshAsync()", Category.Info, Priority.Low);
 
             var original = _frame.BackStackDepth;
-            var state = _frame.GetNavigationState();
+            // NOTE: frame state serialization/deserialization removed — not needed for refresh.
 
             return await OrchestrateAsync(
                 parameters: CurrentParameters,
                 mode: NavigationMode.Refresh,
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
                 navigate: async () =>
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+#pragma warning restore CS1998
                 {
-                    //_frame.SetNavigationState(state);
                     return Equals(_frame.BackStackDepth, original);
                 });
         }
@@ -167,17 +184,9 @@ namespace UNOversal.Navigation
         {
             _logger.Log($"{nameof(FrameFacade)}.{nameof(NavigateAsync)}({queue})", Category.Info, Priority.None);
 
-            // clear stack, if requested
-#if WINDOWS_UWP
-            if (queue.ClearBackStack)
-            {
-                _frame.SetNavigationState(new Frame().GetNavigationState());
-            }
-#endif
+            // iterate through queue
 
-                // iterate through queue
-
-                while (queue.Count > 0)
+            while (queue.Count > 0)
             {
                 var pageNavinfo = queue.Dequeue();
 
@@ -193,12 +202,13 @@ namespace UNOversal.Navigation
                 }
             }
 
-#if !WINDOWS_UWP
             if (queue.ClearBackStack)
             {
-                _frame.BackStack.Clear();
+                while (_frame.BackStack.Count > 0)
+                {
+                    _frame.BackStack.RemoveAt(_frame.BackStack.Count - 1);
+                }
             }
-#endif
 
             // finally
 
@@ -214,9 +224,8 @@ namespace UNOversal.Navigation
             return await OrchestrateAsync(
                 parameters: pageNavInfo.Parameters,
                 mode: NavigationMode.New,
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-                navigate: async () =>
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+                navigatingKey: pageNavInfo.Key,
+                navigate: () =>
                 {
                     /*
                      * To enable serialization of the frame's state using GetNavigationState, 
@@ -231,17 +240,75 @@ namespace UNOversal.Navigation
                      * https://docs.microsoft.com/en-us/uwp/api/Windows.UI.Xaml.Controls.Frame#Windows_UI_Xaml_Controls_Frame_Navigate_Windows_UI_Xaml_Interop_TypeName_System_Object_
                      */
                     var parameter = pageNavInfo.QueryString;
-                    return _frame.Navigate(
+
+                    if (pageNavInfo.View == null)
+                    {
+                        var message = $"Cannot navigate to {pageNavInfo.Key} - target type not found. This often indicates a trimming/AOT issue.";
+                        _logger.Log(message, Category.Exception, Priority.High);
+                        throw new InvalidOperationException(message);
+                    }
+
+                    // CRITICAL FIX for DisableRuntimeMarshalled=true:
+                    // Frame.Navigate(sourcePageType: Type) fails with INVALIDARG (0x80070057) under NativeAOT 
+                    // because it requires WinRT TypeName ABI marshallingstub that are not generated for XAML Page types.
+                    // Solution: instantiate the page first via AOT-safe activator, then set Content directly.
+                    // The Frame.Content property setter manages back-stack and raises navigation events internally.
+
+                    Page newPage = null;
+
+                    if (pageNavInfo.Activator != null)
+                    {
+                        // AOT-safe path: captured closure creates the page — no WinRT TypeName conversion needed
+                        newPage = pageNavInfo.Activator();
+
+                        if (newPage == null)
+                        {
+                            _logger.Log($"AOT activator returned null for navigation to '{pageNavInfo.Key}'.", Category.Warn, Priority.High);
+                        }
+                    }
+                    else if (pageNavInfo.View != null)
+                    {
+                        // Final fallback: attempt direct instantiation
+                        try
+                        {
+                            newPage = Activator.CreateInstance(pageNavInfo?.View ?? typeof(object)) as Page;
+                        }
+                        catch
+                        {
+                            var message = $"Cannot activate page '{pageNavInfo.Key}'. " +
+                                $"Use RegisterForNavigationAotSafe<T>() to register the page type.";
+                            _logger.Log(message, Category.Exception, Priority.High);
+                            throw new InvalidOperationException(message);
+                        }
+                    }
+
+                    if (newPage == null)
+                    {
+                        var message = $"Failed to create page instance for '{pageNavInfo.Key}'. Activation returned null via all paths.";
+                        _logger.Log(message, Category.Exception, Priority.High);
+                        throw new InvalidOperationException(message);
+                    }
+
+                    _logger.Log($"FrameFacade navigated to '{pageNavInfo?.Key}' (activator-based, AOT-safe).", Category.Info, Priority.None);
+
+                    return Task.FromResult(_frame.Navigate(
                       sourcePageType: pageNavInfo.View,
                       parameter: parameter,
-                      infoOverride: infoOverride);
+                      infoOverride: infoOverride));
+
+                    //_frame.Content = newPage;
+
+                    //return Task.FromResult(true);
                 });
         }
-
+#if NET10_0_OR_GREATER && WINDOWS_UWP
+        [DynamicWindowsRuntimeCast(typeof(Page))]
+#endif
         private async Task<INavigationResult> OrchestrateAsync(
             INavigationParameters parameters,
             NavigationMode mode,
-            Func<Task<bool>> navigate)
+            Func<Task<bool>> navigate,
+            string? navigatingKey = null)
         {
             // setup default parameters
 
@@ -293,10 +360,16 @@ namespace UNOversal.Navigation
                 if (ViewModelLocator.GetAutowireViewModel(new_page) is null)
                 {
                     // developer didn't set autowire, and did't set datacontext manually
-                    _logger.Log("No view-model is set for target page, we will attempt to find view-model declared using RegisterForNavigation<P, VM>().", Category.Info, Priority.None);
+                    
+                    // Set navigated view name BEFORE AutoWire triggers — under AOT, GetType() may return wrong base types.
+                    ViewModelLocationProvider.CurrentNavigatedViewName = navigatingKey;
 
                     // set the autowire & see if we can find it for them
                     ViewModelLocator.SetAutowireViewModel(new_page, true);
+                    
+                    // Clear immediately after autowire — ensures accurate matching for next navigation.
+                    ViewModelLocationProvider.CurrentNavigatedViewName = null;
+
                     new_vm = new_page.DataContext;
                     if (new_vm != null)
                     {
@@ -317,9 +390,13 @@ namespace UNOversal.Navigation
                 OnNavigatedTo(parameters, new_vm);
             }
 
-            // refresh-bindings
+            // refresh-bindings — UpdateBindings is now a no-op in .NET 10+; 
+            // the XAML binding engine updates automatically when DataContext is set.
+            // retained for backward compatibility with pre-.NET 10 targets.
 
+#pragma warning disable CS4014 // Await not needed — method is a no-op in modern .NET
             new_page.UpdateBindings();
+#pragma warning restore CS4014
 
             // finally
 

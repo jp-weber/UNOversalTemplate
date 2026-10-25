@@ -261,16 +261,17 @@ namespace UNOversal
             // These weren't auto-registered in the original DryIoc-based version where missing dependencies
             // would be dynamically created via ConstructorWithResolvableArguments policy.
             
-            // Register INavigationService as a global singleton. 
+            // Register INavigationService as a global singleton.
             // During startup (before Frame is created), this provides the default instance.
-            // When pages are navigated to via ShellFrame, ResolveViewModelForView will use 
+            // When pages are navigated to via ShellFrame, ResolveViewModelForView will use
             // NavigationService.Instances[page.Frame] which overrides this for frame-specific navigation.
             if (!containerRegistry.IsRegistered(typeof(INavigationService)))
             {
-                containerRegistry.RegisterSingleton<INavigationService>(() =>
-                {
-                    return UNOversal.Navigation.NavigationFactory.Create();
-                });
+                // IMPORTANT: Register a lambda that creates INavigationService with an explicit Frame.
+                // This is required because MS.DI cannot auto-resolve Windows.UI.Xaml.Controls.Frame under .NET NativeAOT.
+                //containerRegistry.RegisterSingleton<INavigationService>(_ =>
+                //    UNOversal.Navigation.NavigationFactory.Create(
+                //        new Windows.UI.Xaml.Controls.Frame()));
             }
         }
 

@@ -42,5 +42,57 @@
   <!-- Windows/UI assemblies that might interact with reflection -->
   <assembly fullname="Windows.UI.Xaml" preserve="all" />
   <assembly fullname="Microsoft.UI.Xaml" preserve="all" />
+
+  <!-- Microsoft.UI.Xaml Controls — Critical for NavigationView and all WinUI controls -->
+  <assembly fullname="Microsoft.UI.Xaml">
+    <!-- Root types — required by XamlTypeInfo system -->
+    <type fullname="Microsoft.UI.Xaml.Application" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.ApplicationLifeCycleActivatedEventArgs" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.Control" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.ControlTemplate" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.Frame" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.NavigationView" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.NavigationViewItem" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.Primitives.ContentPresenter" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Controls.Primitives.NavigationViewPane" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Data.Binding" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.DependencyObject" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.FrameworkElement" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.ResourceDictionary" preserve="all" />
+    <type fullname="Microsoft.UI.Xaml.Style" preserve="all" />
+
+    <!-- WinUI namespaces — XamlTypeInfo, Templating, Input & more -->
+    <namespace fullname="Microsoft.UI.Xaml" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Automation" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Automation.Peers" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Controls" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Controls.Primitives" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Data" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Documents" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Input" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Interop" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Markup" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Media" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Media.Animation" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.Shapes" preserve="all" />
+    <namespace fullname="Microsoft.UI.Xaml.XamlTypes" preserve="all" />
+  </assembly>
+
+  <!-- Windows.UI.Xaml — base platform types, VSM, Media -->
+  <assembly fullname="Windows.UI.Xaml">
+    <namespace fullname="Windows.UI.Xaml" preserve="all" />
+    <namespace fullname="Windows.UI.Xaml.Automation" preserve="all" />
+    <namespace fullname="Windows.UI.Xaml.Controls" preserve="all" />
+    <namespace fullname="Windows.UI.Xaml.Controls.Primitives" preserve="all" />
+    <namespace fullname="Windows.UI.Xaml.Data" preserve="all" />
+    <namespace fullname="Windows.UI.Xaml.Media" preserve="all" />
+    <namespace fullname="Windows.UI.Xaml.Media.Animation" preserve="all" />
+  </assembly>
+
+  <!-- XamlTypeInfo for WinUI — required during debug/debugger scenarios -->
+  <assembly fullname="Microsoft.UI.Xaml">
+    <namespace fullname="Microsoft.UI.Xaml.XamlTypeInfo" preserve="all" />
+  </assembly>
 </linker>
 

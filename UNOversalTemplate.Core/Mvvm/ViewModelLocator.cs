@@ -47,7 +47,6 @@ namespace UNOversal.Mvvm
             }
         }
 
-
         /// <summary>
         /// Sets the  of a View
         /// </summary>

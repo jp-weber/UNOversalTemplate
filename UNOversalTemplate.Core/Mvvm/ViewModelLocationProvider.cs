@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
+using UNOversal.Ioc;
 
 namespace UNOversal.Mvvm
 {
@@ -25,8 +26,30 @@ namespace UNOversal.Mvvm
 
         /// <summary>
         /// A dictionary that contains all the registered ViewModel types for the views.
+        /// Key is the string-registered view key (e.g., from GetViewKey below). Value is null if explicitly registered as "no VM".
         /// </summary>
-        static Dictionary<string, Type> _typeFactories = new Dictionary<string, Type>();
+        static Dictionary<string, Type?> _typeFactories = new Dictionary<string, Type?>();
+
+        /// <summary>
+        /// Tracks views that were explicitly registered without a ViewModel.
+        /// Stores short names (e.g., "ShellPage") for matching when GetType() works correctly.
+        /// </summary>
+        static HashSet<string> _explicitlyRegisteredNoVmNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// The most recently navigated-to view name, set by the navigation system before AutoWireViewModelChanged is triggered.
+        /// Used for reliable ViewModel lookup under AOT/trimming where GetType() may return incorrect base types (e.g., "Page" instead of "ShellPage").
+        /// </summary>
+        public static string? CurrentNavigatedViewName { get; internal set; }
+
+        /// <summary>
+        /// Clears the navigated view name after autowire processing completes.
+        /// Prevents stale references across multiple concurrent navigations.
+        /// </summary>
+        internal static void ClearCurrentNavigatedViewName()
+        {
+            CurrentNavigatedViewName = null;
+        }
 
         /// <summary>
         /// The default view model factory which provides the ViewModel type as a parameter.
@@ -62,10 +85,10 @@ namespace UNOversal.Mvvm
         /// Default factory implementation with trimming annotation so the parameterless constructor is preserved.
         /// </summary>
         private static object CreateViewModelInstance(
-#if NET10_0_OR_GREATER
+#if WINDOWS_UWP && NET10_0_OR_GREATER
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] 
 #endif
-        Type type)
+            Type type)
             => Activator.CreateInstance(type)!;
 
         /// <summary>
@@ -103,25 +126,55 @@ namespace UNOversal.Mvvm
         /// <param name="setDataContextCallback">The call back to use to create the binding between the View and ViewModel</param>
         public static void AutoWireViewModelChanged(object view, Action<object, object> setDataContextCallback)
         {
-            // Try mappings first
+            // Try registered mappings/factories first.
             object viewModel = GetViewModelForView(view);
 
-            // try to use ViewModel type
-            if (viewModel == null)
+            if (viewModel != null)
             {
-                //check type mappings
-                var viewModelType = GetViewModelTypeForView(view.GetType());
-
-                // fallback to convention based
-                if (viewModelType == null)
-                    viewModelType = _defaultViewTypeToViewModelTypeResolver(view.GetType());
-
-                if (viewModelType == null)
-                    return;
-
-                viewModel = _defaultViewModelFactoryWithViewParameter != null ? _defaultViewModelFactoryWithViewParameter(view, viewModelType) : _defaultViewModelFactory(viewModelType);
+                setDataContextCallback(view, viewModel);
+                return;
             }
 
+            var viewKey = view.GetType().FullName ?? view.GetType().ToString();
+
+            var viewModelType = GetViewModelTypeForView(view.GetType());
+
+            // Fallback to convention-based resolution ONLY for pre-.NET 10 targets.
+            // Under .NET 10 the convention uses assembly-qualified names via Type.GetType() 
+            // which cannot be statically analyzed by the linker — VM types may be trimmed away 
+            // at runtime, leading to silent failures that are hard to diagnose.
+#if !NET10_0_OR_GREATER
+            if (viewModelType == null)
+                viewModelType = _defaultViewTypeToViewModelTypeResolver(view.GetType());
+#endif
+
+            if (viewModelType == null)
+            {
+                var logger = UNOversalApplicationBase.Current?.Container.Resolve<UNOversal.Logging.ILoggerFacade>();
+#if NET10_0_OR_GREATER
+                // Only warn if the view was NOT explicitly registered as "no VM".
+                // Under .NET 10, GetType() may return wrong base types due to AOT stripping,
+                // so we use explicit name tracking for reliable matching.
+                bool hasExplicitNoVmMapping = IsViewExplicitlyRegisteredWithoutViewModel(view);
+                if (!hasExplicitNoVmMapping)
+                {
+                    var viewName = view.GetType().FullName ?? view.GetType().ToString();
+                    logger?.Log(
+                        $"[UNOversal] ViewModel not registered for '{viewName}'. " +
+                        "Convention-based resolution is disabled under .NET 10 (AOT/trimming incompatible). " +
+                        "Register explicitly via ViewModelLocationProvider.Register<T, VM>().",
+                        UNOversal.Logging.Category.Warn, UNOversal.Logging.Priority.None);
+                }
+#else
+                logger?.Log($"[UNOversal] No ViewModel found for '{view.GetType()}' via explicit registration or convention.",
+                        UNOversal.Logging.Category.Warn, UNOversal.Logging.Priority.None);
+#endif
+                return;
+            }
+
+            viewModel = _defaultViewModelFactoryWithViewParameter != null
+                ? _defaultViewModelFactoryWithViewParameter(view, viewModelType)
+                : _defaultViewModelFactory(viewModelType);
 
             setDataContextCallback(view, viewModel);
         }
@@ -144,15 +197,36 @@ namespace UNOversal.Mvvm
 
         /// <summary>
         /// Gets the ViewModel type for the specified view.
+        /// Uses registered mappings first, then falls back to CurrentNavigatedViewName when GetType() is unreliable under AOT.
         /// </summary>
-        /// <param name="view">The View that the ViewModel wants.</param>
-        /// <returns>The ViewModel type that corresponds to the View.</returns>
-        private static Type GetViewModelTypeForView(Type view)
+        private static Type? GetViewModelTypeForView(Type view)
         {
-            var viewKey = view.ToString();
+            var viewFullName = view.FullName;
 
-            if (_typeFactories.ContainsKey(viewKey))
-                return _typeFactories[viewKey];
+            // 1st: Direct lookup by full name (works when GetType() is reliable).
+            if (!string.IsNullOrEmpty(viewFullName) && _typeFactories.TryGetValue(viewFullName, out Type? vm))
+                return vm;
+
+            string viewNameOnly = view.Name;
+
+            // 2nd: Try matching registered keys that END with our view's short name.
+            foreach (var registeredKey in _typeFactories.Keys)
+            {
+                if (registeredKey.EndsWith(viewNameOnly, StringComparison.Ordinal))
+                    return _typeFactories[registeredKey];
+            }
+
+            // 3rd: AOT fallback — use CurrentNavigatedViewName set by the navigation system.
+            // When GetType() returns "Page" instead of "ShellPage", this lets us find 
+            // the correct registered key (e.g., "UWP_Sample.Views.ShellPage") because it ends with "ShellPage".
+            if (!string.IsNullOrEmpty(CurrentNavigatedViewName))
+            {
+                foreach (var registeredKey in _typeFactories.Keys)
+                {
+                    if (registeredKey.EndsWith(CurrentNavigatedViewName, StringComparison.Ordinal))
+                        return _typeFactories[registeredKey];
+                }
+            }
 
             return null;
         }
@@ -202,10 +276,79 @@ namespace UNOversal.Mvvm
         /// Registers a ViewModel type for the specified view.
         /// </summary>
         /// <param name="viewTypeName">The View type name</param>
-        /// <param name="viewModelType">The ViewModel type</param>
-        public static void Register(string viewTypeName, Type viewModelType)
+        /// <param name="viewModelType">The ViewModel type (null to mark as "no VM")</param>
+        public static void Register(string viewTypeName, Type? viewModelType)
         {
             _typeFactories[viewTypeName] = viewModelType;
+            
+            // Track explicit no-VM registrations by short name for matching.
+            if (viewModelType == null)
+            {
+                var lastDot = viewTypeName.LastIndexOf('.');
+                var shortName = lastDot >= 0 ? viewTypeName.Substring(lastDot + 1) : viewTypeName;
+                _explicitlyRegisteredNoVmNames.Add(shortName);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the specified view was explicitly registered as "no ViewModel".
+        /// Uses CurrentNavigatedViewName as primary matching under AOT.
+        /// </summary>
+        public static bool IsViewExplicitlyRegisteredWithoutViewModel(object view)
+        {
+            // Phase 1: If we have the navigated name, match against it (most reliable).
+            if (!string.IsNullOrEmpty(CurrentNavigatedViewName))
+            {
+                foreach (var key in _typeFactories.Keys)
+                {
+                    if (_typeFactories[key] == null && key.EndsWith(CurrentNavigatedViewName, StringComparison.Ordinal))
+                        return true;
+                }
+
+                var vn = view.GetType().Name;
+                if (_explicitlyRegisteredNoVmNames.Contains(vn))
+                {
+                    bool hasVmRegistration = false;
+                    foreach (var k in _typeFactories.Keys)
+                    {
+                        if (_typeFactories[k] != null && k.EndsWith(vn, StringComparison.Ordinal))
+                        {
+                            hasVmRegistration = true;
+                            break;
+                        }
+                    }
+                    if (!hasVmRegistration) return true;
+                }
+            }
+
+            // Phase 2: Fallback to view type name matching when no navigation context exists.
+            string? viewNameOnly = view.GetType().Name;
+            if (_explicitlyRegisteredNoVmNames.Contains(viewNameOnly))
+                return true;
+
+            var viewFullName = view.GetType().FullName;
+            if (!string.IsNullOrEmpty(viewFullName))
+            {
+                foreach (var key in _typeFactories.Keys)
+                {
+                    if (_typeFactories[key] == null && key.EndsWith(viewNameOnly, StringComparison.Ordinal))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        static string GetViewTypeName(object view)
+        {
+            var type = view.GetType();
+            var fullName = type.FullName;
+            if (!string.IsNullOrEmpty(fullName))
+            {
+                var dot = fullName.LastIndexOf('.');
+                return dot >= 0 ? fullName.Substring(dot + 1) : fullName;
+            }
+            return type.ToString()!;
         }
     }
 }

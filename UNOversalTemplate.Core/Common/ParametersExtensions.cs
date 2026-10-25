@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace UNOversal.Common
@@ -19,7 +20,12 @@ namespace UNOversal.Common
         /// <param name="key">The key of the parameter to find</param>
         /// <returns>A matching value of <typeparamref name="T"/> if it exists</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static T GetValue<T>(this IEnumerable<KeyValuePair<string, object>> parameters, string key) =>
+        public static T GetValue<
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
+             T>
+            (this IEnumerable<KeyValuePair<string, object>> parameters, string key) =>
             (T)GetValue(parameters, key, typeof(T));
 
         /// <summary>
@@ -31,7 +37,11 @@ namespace UNOversal.Common
         /// <returns>A matching value of <paramref name="type"/> if it exists</returns>
         /// <exception cref="InvalidCastException">Unable to convert the value of Type</exception>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static object GetValue(this IEnumerable<KeyValuePair<string, object>> parameters, string key, Type type)
+        public static object GetValue(this IEnumerable<KeyValuePair<string, object>> parameters, string key,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] 
+#endif
+        Type type)
         {
             foreach (var kvp in parameters)
             {
@@ -56,7 +66,12 @@ namespace UNOversal.Common
         /// <param name="value">The value of parameter to return</param>
         /// <returns>Success if value is found; otherwise returns <c>false</c></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static bool TryGetValue<T>(this IEnumerable<KeyValuePair<string, object>> parameters, string key, out T value)
+        public static bool TryGetValue<
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] 
+#endif
+        T>
+            (this IEnumerable<KeyValuePair<string, object>> parameters, string key, out T value)
         {
             var type = typeof(T);
 
@@ -82,7 +97,12 @@ namespace UNOversal.Common
         /// <param name="key">The key of the parameter to find</param>
         /// <returns>An IEnumerable{T} of all the values referenced by key</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static IEnumerable<T> GetValues<T>(this IEnumerable<KeyValuePair<string, object>> parameters, string key)
+        public static IEnumerable<T> GetValues<
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] 
+#endif
+        T>
+            (this IEnumerable<KeyValuePair<string, object>> parameters, string key)
         {
             List<T> values = new List<T>();
             var type = typeof(T);
@@ -99,7 +119,11 @@ namespace UNOversal.Common
             return values.AsEnumerable();
         }
 
-        private static bool TryGetValueInternal(KeyValuePair<string, object> kvp, Type type, out object value)
+        private static bool TryGetValueInternal(KeyValuePair<string, object> kvp,
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] 
+#endif
+        Type type, out object value)
         {
             value = GetDefault(type);
             var success = false;
@@ -151,7 +175,14 @@ namespace UNOversal.Common
         public static bool ContainsKey(this IEnumerable<KeyValuePair<string, object>> parameters, string key) =>
             parameters.Any(x => string.Compare(x.Key, key, StringComparison.Ordinal) == 0);
 
-        private static object GetDefault(Type type)
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
+#endif
+        private static object GetDefault(
+#if WINDOWS_UWP && NET10_0_OR_GREATER
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
+#endif
+        Type type)
         {
             if (type.IsValueType)
             {
