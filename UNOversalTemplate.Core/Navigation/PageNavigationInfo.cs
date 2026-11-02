@@ -1,10 +1,15 @@
 ﻿using System;
 #if WINDOWS_UWP
 using Windows.UI.Xaml.Controls;
-using WinRT;
+
 #else
 using Microsoft.UI.Xaml.Controls;
 #endif
+
+#if NET10_0_OR_GREATER && WINDOWS_UWP
+using WinRT;
+#endif
+
 
 namespace UNOversal.Navigation
 {
@@ -34,7 +39,9 @@ namespace UNOversal.Navigation
         /// <summary>
         /// Creates a page instance using the registered activator or a reflection fallback.
         /// </summary>
+#if NET10_0_OR_GREATER && WINDOWS_UWP
         [DynamicWindowsRuntimeCast(typeof(Page))]
+#endif
         public Page CreatePage()
         {
             if (Activator != null)
